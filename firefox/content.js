@@ -63,29 +63,68 @@ browser.storage.sync.onChanged.addListener(function (changes, namespace) {
 });
 
 if (isShort) {
-  let video = document.querySelector("video");
-  console.log("video", video);
-  let lastUrl = location.href;
-  new MutationObserver(() => {
-    const url = location.href;
-    if (url !== lastUrl) {
-      lastUrl = url;
-      onUrlChange();
-    }
-  }).observe(document, { subtree: true, childList: true });
-
-  function onUrlChange() {
-    console.log("URL changed!", location.href);
+  console.log("is short");
+  let videoId = 0;
+  function getUnicodeNumber(numb) {
+    let numberArray = numb.toString().split("");
+    let result = "";
+    // foreach number in numberArray add unicode number
+    numberArray.forEach((number) => {
+      result += `\\${parseInt(number) + 30}`;
+    });
+    return result;
   }
-  // wait until video is finished
-  video.addEventListener("ended", () => {
-    console.log("Video ended");
-    // // skip to next video
-    // if (settings.skip) {
-    //   console.log("Skip to next video");
-    //   document.querySelector("button.ytp-next-button").click();
-    // }
+  // console.log(getUnicodeNumber(100));
+  let video = document.querySelector("video");
+  // do two times otherwise it wont remove loop correctly
+  const config = { subtree: true, childList: true, attributeFilter: ["video"] };
+  let videoLoopDeactivated = false;
+  let doOnce = true;
+  let videoObserver = new MutationObserver((mutations) => {
+    video = document.querySelector("video");
+    // console.log("video", video, video.loop);
+    if (video.loop) {
+      // remove attribute loop from video
+      video.removeAttribute("loop");
+      console.log("removed loop", videoId);
+      videoLoopDeactivated = true;
+    } else if (videoLoopDeactivated) {
+      videoObserver.disconnect();
+    }
+    if (videoLoopDeactivated && doOnce) {
+      doOnce = false;
+      addListener();
+    }
   });
+  videoObserver.observe(document, config);
+  function addListener() {
+    // wait until video is finished
+    video.addEventListener("ended", () => {
+      console.log("Video ended");
+      // go to next video
+      let query = "ytd-reel-video-renderer#" + getUnicodeNumber(videoId + 1);
+      let nextShort = document.querySelector(query);
+      console.log("nextShort", nextShort, query);
+      if (nextShort) {
+        nextShort.scrollIntoView();
+        videoId++;
+        videoLoopDeactivated = false;
+        videoObserver.observe(document, config);
+      }
+    });
+  }
+  // let lastUrl = location.href;
+  // new MutationObserver(() => {
+  //   const url = location.href;
+  //   if (url !== lastUrl) {
+  //     lastUrl = url;
+  //     onUrlChange();
+  //   }
+  // }).observe(document, { subtree: true, childList: true });
+
+  // function onUrlChange() {
+  //   console.log("URL changed!", location.href);
+  // }
 } else {
   let video = document.querySelector("video");
   console.log("video", video);
