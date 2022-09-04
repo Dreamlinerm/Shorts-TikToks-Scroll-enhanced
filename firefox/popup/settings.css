@@ -1,0 +1,214 @@
+/*
+ * Netflix/Prime Auto-Skip
+ * Copyright (c) 2022 Marvin Krebber
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the  GNU General Public License v3.0.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License v3.0 for more details.
+ */
+
+body,
+h1,
+h2,
+p,
+span,
+a,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Lato", sans-serif;
+}
+html,
+body,
+.content {
+  /* width: 400px; */
+  background-color: #212121;
+}
+.content {
+  min-width: 400px;
+}
+div {
+  color: white;
+}
+.hidden {
+  display: none;
+}
+/* buttons */
+.button {
+  margin-top: 5px;
+  padding: 4px;
+  /* margin: 0 10px; */
+  text-align: center;
+  font-size: 1.5em;
+  cursor: pointer;
+  border-radius: 15px;
+  transition-duration: 0.4s;
+}
+
+.reset {
+  background-color: #5485ad;
+  flex-grow: 2;
+}
+.reset:hover {
+  background-color: #446a8a;
+}
+.github {
+  margin-right: 5px;
+  background-color: #5485ad;
+  /* transparent */
+  opacity: 0.5;
+  color: white;
+  text-decoration: none;
+  flex-grow: 1;
+}
+.github:hover {
+  background-color: #2d8edd;
+}
+.donate {
+  margin-left: 5px;
+  background-color: #5485ad;
+  /* transparent */
+  opacity: 0.5;
+  color: white;
+  text-decoration: none;
+  flex-grow: 1;
+}
+.donate:hover {
+  background-color: #2d8edd;
+}
+
+.flex {
+  display: flex;
+}
+.flex {
+  display: flex;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex-justify {
+  display: flex;
+  justify-content: center;
+}
+.flex-align {
+  display: flex;
+  align-items: center;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.line,
+h1,
+h2,
+h3,
+p {
+  padding: 5px 10px;
+  margin: unset;
+}
+p {
+  color: white;
+  font-size: 1.4em;
+  padding-right: 10px;
+}
+img {
+  /* width: 100px; */
+  height: 3em;
+}
+.title {
+  padding-top: unset;
+  padding-bottom: unset;
+}
+.categoryPrime {
+  background-color: #00aeef;
+  border-radius: 10px;
+}
+#Export {
+  margin-top: 5px;
+  background-color: grey;
+  border-radius: 10px;
+}
+
+/* Switch styling */
+label {
+  margin-left: auto;
+}
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  /* -webkit-transition: 0.4s;
+  transition: 0.4s; */
+}
+
+input:checked + .slider {
+  background-color: #00a205;
+}
+/* change color on hover */
+input:checked + .slider:hover {
+  background-color: #006303;
+}
+/* input:focus + .slider {
+  box-shadow: 0 0 1px #00a205;
+} */
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
