@@ -12,7 +12,7 @@
  */
 let url = window.location.href;
 const isShort = /shorts/i.test(url);
-const version = "1.0.12";
+const version = "1.0.0";
 // global variables in localStorage
 const defaultSettings = {
   settings: {
@@ -64,6 +64,7 @@ browser.storage.sync.onChanged.addListener(function (changes, namespace) {
 
 if (isShort) {
   let video = document.querySelector("video");
+  console.log("video", video);
   let lastUrl = location.href;
   new MutationObserver(() => {
     const url = location.href;
@@ -76,4 +77,26 @@ if (isShort) {
   function onUrlChange() {
     console.log("URL changed!", location.href);
   }
+  // wait until video is finished
+  video.addEventListener("ended", () => {
+    console.log("Video ended");
+    // // skip to next video
+    // if (settings.skip) {
+    //   console.log("Skip to next video");
+    //   document.querySelector("button.ytp-next-button").click();
+    // }
+  });
+} else {
+  let video = document.querySelector("video");
+  console.log("video", video);
+  console.log("not a short");
+  // wait until video is finished
+  video.addEventListener("ended", () => {
+    console.log("Video ended");
+    // skip to next video
+    // if (settings.skip) {
+    console.log("Skip to next video");
+    document.querySelector("a.ytp-autonav-endscreen-upnext-button").click();
+    // }
+  });
 }
