@@ -92,7 +92,18 @@ if (isShort || isTikTok) {
   const TikTokObserver = new MutationObserver(TikTok);
   function TikTok(mutations, observer) {
     if (settings.TikTok.autoScroll) {
-      console.log("TikTokObserver");
+      // auto scroll to next video when video finished
+      const video = document.querySelector("video");
+      if (video) {
+        console.log(Math.round(video.currentTime * 10) / 10, Math.round(video.duration * 10) / 10);
+        if (Math.round(video.currentTime * 10) / 10 == Math.round(video.duration * 10) / 10) {
+          console.log("Video finished");
+          skipButton = document.querySelector("button[data-e2e='arrow-right']");
+          if (skipButton) {
+            skipButton.click();
+          }
+        }
+      }
     }
   }
 
