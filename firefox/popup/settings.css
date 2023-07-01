@@ -1,5 +1,5 @@
 /*
- * Netflix/Prime Auto-Skip
+ * Streaming enhanced
  * Copyright (c) 2022 Marvin Krebber
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,8 +29,15 @@ body,
   /* width: 400px; */
   background-color: #212121;
 }
+body {
+  margin: unset;
+}
 .content {
   min-width: 400px;
+}
+.page {
+  padding: 80px 0 0 3%;
+  width: 97%;
 }
 div {
   color: white;
@@ -40,46 +47,30 @@ div {
 }
 /* buttons */
 .button {
-  margin-top: 5px;
-  padding: 4px;
-  /* margin: 0 10px; */
-  text-align: center;
   font-size: 1.5em;
   cursor: pointer;
-  border-radius: 15px;
   transition-duration: 0.4s;
+
+  margin: 5px;
+  border-radius: 15px;
+  padding: 5px 10px;
+  text-align: center;
+  background-color: #0082fc;
+  color: white;
+  text-decoration: none;
+  flex-grow: 1;
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+.button:hover {
+  /* background-color: #d0d0d7; */
+  opacity: 0.8;
 }
 
 .reset {
-  background-color: #5485ad;
-  flex-grow: 2;
-}
-.reset:hover {
-  background-color: #446a8a;
-}
-.github {
-  margin-right: 5px;
-  background-color: #5485ad;
-  /* transparent */
-  opacity: 0.5;
-  color: white;
-  text-decoration: none;
-  flex-grow: 1;
-}
-.github:hover {
-  background-color: #2d8edd;
-}
-.donate {
-  margin-left: 5px;
-  background-color: #5485ad;
-  /* transparent */
-  opacity: 0.5;
-  color: white;
-  text-decoration: none;
-  flex-grow: 1;
-}
-.donate:hover {
-  background-color: #2d8edd;
+  margin-top: 50px;
 }
 
 .flex {
@@ -117,7 +108,7 @@ h1,
 h2,
 h3,
 p {
-  padding: 5px 10px;
+  padding: 5px 5px;
   margin: unset;
 }
 p {
@@ -125,7 +116,7 @@ p {
   font-size: 1.4em;
   padding-right: 10px;
 }
-img {
+.Logo {
   /* width: 100px; */
   height: 3em;
 }
@@ -133,13 +124,27 @@ img {
   padding-top: unset;
   padding-bottom: unset;
 }
+.categoryVideo {
+  background-color: #636363;
+  border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
 .categoryPrime {
   background-color: #00aeef;
-  border-radius: 10px;
 }
-#Export {
+.categoryNetflix {
+  background-color: #e60010;
+}
+.categoryDisney {
+  background-color: #000c7d;
+}
+.categoryPrime,
+.categoryNetflix,
+.categoryDisney {
   margin-top: 5px;
-  background-color: grey;
+  margin-left: 5px;
+  margin-right: 5px;
   border-radius: 10px;
 }
 
@@ -184,7 +189,7 @@ label {
   bottom: 4px;
   background-color: white;
   /* -webkit-transition: 0.4s;
-  transition: 0.4s; */
+   transition: 0.4s; */
 }
 
 input:checked + .slider {
@@ -195,8 +200,8 @@ input:checked + .slider:hover {
   background-color: #006303;
 }
 /* input:focus + .slider {
-  box-shadow: 0 0 1px #00a205;
-} */
+   box-shadow: 0 0 1px #00a205;
+ } */
 
 input:checked + .slider:before {
   -webkit-transform: translateX(26px);
@@ -212,3 +217,152 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+/* Firefox */
+/* html {
+   scrollbar-color: #212121 grey;
+   scrollbar-width: thin;
+ } */
+/* WebKit and Chromiums */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: #212121;
+}
+
+::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 5px;
+}
+
+/* The side navigation menu */
+.sidenav {
+  height: 100vh;
+  background-color: #111;
+  /* margin-right: 5px;
+   position: fixed; 
+   z-index: 1; 
+   top: 0; 
+   left: 0; */
+  /* border-radius: 15px; */
+  /* margin: 15px; */
+  padding: 0 10px;
+  gap: 20px;
+  text-align: center;
+}
+
+/* The navigation menu links */
+.menuButton {
+  border-radius: 15px;
+  margin: 5px 15px;
+  padding: 13px 20px;
+  max-width: 400px;
+  background-color: #242424;
+  text-decoration: none;
+  white-space: __MSG_noWrap__;
+  cursor: pointer;
+  color: white;
+  font-size: 1.5em;
+}
+
+/* When you mouse over the navigation links, change their color */
+.menuButton:hover {
+  background-color: #4d0000;
+}
+
+.description {
+  font-size: 17px;
+  padding: 10px 80px 20px 20px;
+  color: #cccccc;
+}
+hr {
+  margin: 0 5px;
+}
+.IconBox {
+  padding: 20px 20px;
+}
+#openVideoSettings,
+#openAmazonSettings,
+#openNetflixSettings,
+#openStatistics {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+.settingsIcon:hover {
+  -webkit-animation: spin 4s linear infinite;
+  -moz-animation: spin 4s linear infinite;
+  animation: spin 4s linear infinite;
+}
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-height: 725px), only screen and (max-width: 1000px) {
+  .MenuButtons {
+    flex-direction: row;
+    justify-content: center;
+  }
+  .menuButton {
+    margin: 5px;
+    padding: 5px 10px;
+  }
+  .blueButtons {
+    margin: 0 5px !important;
+  }
+  body {
+    flex-direction: column;
+  }
+  .page {
+    padding: 0px;
+  }
+  .IconBox {
+    padding: 10px 0px 0px 0px;
+    flex-direction: row;
+  }
+  .page {
+    margin: 0 15px 0 15px;
+    width: calc(100% - 30px);
+  }
+  .icon {
+    margin: 0 5px !important;
+  }
+  .sidenav {
+    height: auto;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .menuButton,
+  .blueButtons {
+    font-size: 1em;
+  }
+}
+.icon {
+  width: 1.4em;
+  height: 1.4em;
+  margin: 0 10px;
+  background-color: transparent;
+  fill: white;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* .icon path {
+   fill: white;
+ } */

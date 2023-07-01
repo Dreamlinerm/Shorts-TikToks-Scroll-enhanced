@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "Shorts/Tiktoks/Reals enhanced",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Auto play next video and short",
+    "description": "Description of the extension"
+  }
+}
