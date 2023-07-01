@@ -1,5 +1,5 @@
 /*
- * TODO: Name
+ * Streaming enhanced
  * Copyright (c) 2022 Marvin Krebber
  *
  * This program is free software: you can redistribute it and/or modify
@@ -12,14 +12,61 @@
  */
 
 // find out if on settings page or on popup page
-if (window.outerWidth > 100) {
-  document.querySelector("#Export").style.display = "block";
+// if document.title is "Streaming enhanced" then it is not the popup page
+// if (window?.outerWidth > 400) {
+//   AmazonSettings();
+//   NetflixSettings();
+//   // Statistics();
+//   document.querySelector("#Export").style.display = "block";
+// }
+
+/**
+ * Localize by replacing __MSG_***__ meta tags
+ * @returns {void}
+ */
+function localizeHtmlPage() {
+  // https://stackoverflow.com/questions/25467009/internationalization-of-html-pages-for-my-google-chrome-extension
+  // let objects = document.getElementsByTagName("html");
+  // for (obj of objects) {
+  //   let valStrH = obj.innerHTML.toString();
+  //   let valNewH = valStrH.replace(/__MSG_((?!\_).*)__/g, function (match, v1) {
+  //     let messages = v1.split(";");
+  //     return messages ? browser.i18n.getMessage.apply(null, messages) : "";
+  //   });
+
+  //   if (valNewH != valStrH) {
+  //     obj.innerHTML = valNewH;
+  //   }
+  // }
+
+  //innerHTML triggers warnings so changed functions
+
+  // i18n tag
+  let translations = document.getElementsByTagName("i18n");
+  for (trans of translations) {
+    let Translated = browser.i18n.getMessage.apply(null, trans.textContent.split(";"));
+    trans.textContent = Translated;
+  }
+  // i18n attribute
+  translations = document.querySelectorAll("[i18n]");
+  for (trans of translations) {
+    let Translated = browser.i18n.getMessage.apply(null, trans.textContent.split(";"));
+    trans.textContent = Translated;
+  }
 }
+
+localizeHtmlPage();
+
+// remove everything before # in window.location
+let url = window.location.href;
+if (url.includes("#")) Menu(url.split("#")[1]);
 
 // global variables in localStorage
 const defaultSettings = {
   settings: {
-    skip: true,
+    TikTok: { autoScroll: true, speedSlider: true },
+    Statistics: {},
+    General: { sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
   },
 };
 let settings = defaultSettings.settings;
@@ -61,9 +108,52 @@ browser.storage.sync.onChanged.addListener(function (changes, namespace) {
     }
   }
 });
+function getTimeFormatted(sec = 0) {
+  if (typeof sec !== "number") return "0s";
+  let days = Math.floor(sec / 86400);
+  let hours = Math.floor((sec % 86400) / 3600);
+  let minutes = Math.floor(((sec % 86400) % 3600) / 60);
+  let seconds = Math.floor(((sec % 86400) % 3600) % 60);
+  let text;
+  if (days > 0) text = `${days}d ${hours}h ${minutes}m`;
+  else if (hours > 0) text = `${hours}h ${minutes}m ${seconds}s`;
+  else if (minutes > 0) text = `${minutes}m ${seconds}s`;
+  else text = `${seconds}s`;
+  return text;
+}
 function setCheckboxesToSettings() {
-  let button = document.querySelector("#placeholder");
-  if (button) button.checked = true;
+  let button;
+
+  //  -------------      Default        ---------------------------------------
+
+  //  -------------      Tiktok        ---------------------------------------
+  button = document.querySelector("#TikTokSkips");
+  if (button) button.checked = settings?.TikTok.autoScroll && settings?.TikTok.speedSlider;
+  button = document.querySelector("#TikTokAutoScroll");
+  if (button) button.checked = settings?.TikTok.autoScroll;
+  button = document.querySelector("#TikTokSpeedSlider");
+  if (button) button.checked = settings?.TikTok.speedSlider;
+
+  // general video settings
+
+  //  -------------      Slider Options        ---------------------------------------
+  button = document.querySelector("#SliderSteps");
+  if (button) button.value = settings?.General.sliderSteps;
+  button = document.querySelector("#SliderMin");
+  if (button) button.value = settings?.General.sliderMin;
+  button = document.querySelector("#SliderMax");
+  if (button) button.value = settings?.General.sliderMax;
+  button = document.querySelector("#SliderPreview");
+  if (button) {
+    button.step = settings?.General.sliderSteps;
+    button.min = settings?.General.sliderMin;
+    button.max = settings?.General.sliderMax;
+  }
+  button = document.querySelector("#SliderValue");
+  if (button) button.textContent = sliderValue / 10 + "x";
+
+  // Statistics
+
   // import/export buttons
   button = document.querySelector("#save");
   if (button) {
@@ -72,19 +162,68 @@ function setCheckboxesToSettings() {
     button.download = "settings.json";
   }
 }
+// open and close the Amazon and Netflix Individual Settings
+function openIndividualSettings(setting) {
+  const open = document.getElementById(setting + "Settings").style.display === "none";
+  document.getElementById(setting + "Settings").style.display = open ? "block" : "none";
+  document.getElementsByClassName(setting + "DownArrow")[0].style.display = open ? "none" : "block";
+  document.getElementsByClassName(setting + "UpArrow")[0].style.display = open ? "block" : "none";
+}
+function Menu(setting) {
+  const Pages = ["TikTok", "Other", "Default"];
+  const noButton = ["Default"];
+  for (const page of Pages) {
+    document.getElementById(page + "Settings").style.display = "none";
+    if (!noButton.includes(page)) document.getElementById("Menu" + page).style.setProperty("background-color", "");
+  }
+  document.getElementById(setting + "Settings").style.display = "block";
+  if (!noButton.includes(setting)) document.getElementById("Menu" + setting).style.setProperty("background-color", "#e60010");
+}
 /**
  * Listen for clicks on the buttons, and send the appropriate message to
  * the content script in the page.
  */
+function setSettings(log) {
+  console.log(log, settings);
+  browser.storage.sync.set({ settings });
+}
 function listenForClicks() {
   let listener = document.addEventListener("click", (e) => {
     if (e.target.classList.contains("reset")) {
-      console.log("settings resetted to", defaultSettings);
-      browser.storage.sync.set(defaultSettings);
-    } else if (e.target.id === "placeholder") {
-      console.log("placeholder");
-      browser.storage.sync.set({ settings });
-    } else if (e.target.id === "upload") {
+      if (confirm("Are you sure to reset every Setting including Statistics?")) {
+        console.log("settings resetted to default");
+        browser.storage.sync.set(defaultSettings);
+      }
+    }
+    //  -------------      Menu        ---------------------------------------
+    else if (e.target.id === "MenuTikTok") {
+      Menu("TikTok");
+    } else if (e.target.id === "MenuOther") {
+      Menu("Other");
+    }
+    //  -------------      openSettings        ---------------------------------------
+    else if (e.target.id === "openTikTokSettings") {
+      openIndividualSettings("TikTok");
+    }
+    // -------------      Default        ---------------------------------------
+    //  -------------      TikTok        ---------------------------------------
+    else if (e.target.id === "TikTokSkips") {
+      const TikTokSkips = !(settings?.TikTok.autoScroll && settings?.TikTok.speedSlider);
+      settings.TikTok.autoScroll = TikTokSkips;
+      settings.TikTok.speedSlider = TikTokSkips;
+      setSettings("All TikTokSkips");
+    } else if (e.target.id === "TikTokAutoScroll") {
+      settings.TikTok.autoScroll = !settings.TikTok.autoScroll;
+      setSettings("TikTokAutoScroll");
+    } else if (e.target.id === "TikTokSpeedSlider") {
+      settings.TikTok.speedSlider = !settings.TikTok.speedSlider;
+      setSettings("TikTokSpeedSlider");
+    }
+
+    //  -------------      Video        ---------------------------------------
+
+    //  -------------      Upload        ---------------------------------------
+    else if (e.target.id === "upload") {
       // get the file from #file and console.log it
       const file = document.getElementById("file").files[0];
       if (file !== undefined && "application/json" === file.type) {
@@ -118,6 +257,29 @@ function listenForClicks() {
   });
 }
 
+function listenForInput() {
+  document.addEventListener("input", (e) => {
+    if (e.target.id === "SliderSteps") {
+      settings.General.sliderSteps = Number(e.target.value);
+      setCheckboxesToSettings();
+      setSettings("SliderSteps");
+    } else if (e.target.id === "SliderMin") {
+      settings.General.sliderMin = Number(e.target.value);
+      sliderValue = settings.General.sliderMin;
+      setCheckboxesToSettings();
+      setSettings("SliderMin");
+    } else if (e.target.id === "SliderMax") {
+      settings.General.sliderMax = Number(e.target.value);
+      sliderValue = settings.General.sliderMax;
+      setCheckboxesToSettings();
+      setSettings("SliderMax");
+    } else if (e.target.id === "SliderPreview") {
+      sliderValue = Number(e.target.value);
+      setCheckboxesToSettings();
+    }
+  });
+}
+
 /**
  * There was an error executing the script.
  * Display the popup's error message, and hide the normal UI.
@@ -134,6 +296,7 @@ function reportExecuteScriptError(error) {
  */
 try {
   listenForClicks();
+  listenForInput();
 } catch (e) {
   reportExecuteScriptError(e);
 }
