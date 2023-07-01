@@ -6,13 +6,13 @@
   "description": "__MSG_extensionDescription__",
   "homepage_url": "https://github.com/Dreamlinerm/Shorts-Tiktoks-Reals-enhanced",
   "icons": {
-    "16": "icons/youtube.svg",
-    "24": "icons/youtube.svg",
-    "32": "icons/youtube.svg",
-    "48": "icons/youtube.svg",
-    "64": "icons/youtube.svg",
-    "96": "icons/youtube.svg",
-    "128": "icons/youtube.svg"
+    "16": "icons/shorts.svg",
+    "24": "icons/shorts.svg",
+    "32": "icons/shorts.svg",
+    "48": "icons/shorts.svg",
+    "64": "icons/shorts.svg",
+    "96": "icons/shorts.svg",
+    "128": "icons/shorts.svg"
   },
   "content_scripts": [
     {
@@ -22,7 +22,7 @@
   ],
   "permissions": ["storage"],
   "browser_action": {
-    "default_icon": "icons/youtube.svg",
+    "default_icon": "icons/shorts.svg",
     "default_title": "__MSG_extensionName__",
     "default_popup": "popup/popup.html"
   },
