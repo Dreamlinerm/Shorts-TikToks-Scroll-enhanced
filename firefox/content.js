@@ -27,7 +27,7 @@ if (isShort || isTikTok) {
   const defaultSettings = {
     settings: {
       TikTok: { autoScroll: true, speedSlider: true },
-      Shorts: { autoScroll: true, speedSlider: true },
+      Youtube: { autoScroll: true, speedSlider: true },
       Statistics: {},
       General: { sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
       Statistics: { SegmentsSkipped: 0 },
@@ -51,7 +51,7 @@ if (isShort || isTikTok) {
         TikTokObserver.observe(document, config);
       } else if (isShort) {
         // start Observers depending on the settings
-        ShortsObserver.observe(document, config);
+        YoutubeObserver.observe(document, config);
       }
       let changedSettings = false;
       for (const key in defaultSettings.settings) {
@@ -113,10 +113,10 @@ if (isShort || isTikTok) {
     }
   }
 
-  // Shorts Observer
-  const ShortsObserver = new MutationObserver(TikTok);
+  // Youtube Observer
+  const YoutubeObserver = new MutationObserver(TikTok);
   function TikTok(mutations, observer) {
-    if (settings.Shorts.autoScroll) {
+    if (settings.Youtube.autoScroll) {
       // auto scroll to next video when video finished
       const reel = document.querySelector("ytd-reel-video-renderer[is-active='']");
       const video = reel?.querySelector("video");

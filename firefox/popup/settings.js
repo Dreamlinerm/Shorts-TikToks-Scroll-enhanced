@@ -65,6 +65,7 @@ if (url.includes("#")) Menu(url.split("#")[1]);
 const defaultSettings = {
   settings: {
     TikTok: { autoScroll: true, speedSlider: true },
+    Youtube: { autoScroll: true, speedSlider: true },
     Statistics: {},
     General: { sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
     Statistics: { SegmentsSkipped: 0 },
@@ -135,6 +136,14 @@ function setCheckboxesToSettings() {
   button = document.querySelector("#TikTokSpeedSlider");
   if (button) button.checked = settings?.TikTok.speedSlider;
 
+  //  -------------      Youtube        ---------------------------------------
+  button = document.querySelector("#YoutubeSkips");
+  if (button) button.checked = settings?.Youtube.autoScroll && settings?.Youtube.speedSlider;
+  button = document.querySelector("#YoutubeAutoScroll");
+  if (button) button.checked = settings?.Youtube.autoScroll;
+  button = document.querySelector("#YoutubeSpeedSlider");
+  if (button) button.checked = settings?.Youtube.speedSlider;
+
   // general video settings
 
   //  -------------      Slider Options        ---------------------------------------
@@ -171,7 +180,7 @@ function openIndividualSettings(setting) {
   document.getElementsByClassName(setting + "UpArrow")[0].style.display = open ? "block" : "none";
 }
 function Menu(setting) {
-  const Pages = ["TikTok", "Other", "Default"];
+  const Pages = ["TikTok", "Youtube", "Other", "Default"];
   const noButton = ["Default"];
   for (const page of Pages) {
     document.getElementById(page + "Settings").style.display = "none";
@@ -199,12 +208,16 @@ function listenForClicks() {
     //  -------------      Menu        ---------------------------------------
     else if (e.target.id === "MenuTikTok") {
       Menu("TikTok");
+    } else if (e.target.id === "MenuYoutube") {
+      Menu("Youtube");
     } else if (e.target.id === "MenuOther") {
       Menu("Other");
     }
     //  -------------      openSettings        ---------------------------------------
     else if (e.target.id === "openTikTokSettings") {
       openIndividualSettings("TikTok");
+    } else if (e.target.id === "openYoutubeSettings") {
+      openIndividualSettings("Youtube");
     }
     // -------------      Default        ---------------------------------------
     //  -------------      TikTok        ---------------------------------------
@@ -219,6 +232,20 @@ function listenForClicks() {
     } else if (e.target.id === "TikTokSpeedSlider") {
       settings.TikTok.speedSlider = !settings.TikTok.speedSlider;
       setSettings("TikTokSpeedSlider");
+    }
+
+    //  -------------      Youtube        ---------------------------------------
+    else if (e.target.id === "YoutubeSkips") {
+      const YoutubeSkips = !(settings?.Youtube.autoScroll && settings?.Youtube.speedSlider);
+      settings.Youtube.autoScroll = YoutubeSkips;
+      settings.Youtube.speedSlider = YoutubeSkips;
+      setSettings("All YoutubeSkips");
+    } else if (e.target.id === "YoutubeAutoScroll") {
+      settings.Youtube.autoScroll = !settings.Youtube.autoScroll;
+      setSettings("YoutubeAutoScroll");
+    } else if (e.target.id === "YoutubeSpeedSlider") {
+      settings.Youtube.speedSlider = !settings.Youtube.speedSlider;
+      setSettings("YoutubeSpeedSlider");
     }
 
     //  -------------      Video        ---------------------------------------
