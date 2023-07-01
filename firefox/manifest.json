@@ -23,8 +23,11 @@
   "permissions": ["storage"],
   "browser_action": {
     "default_icon": "icons/youtube.svg",
-    "default_title": "Netflix/Prime Auto-Skip ",
-    "default_popup": "popup/settings.html"
+    "default_title": "__MSG_extensionName__",
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "scripts": ["badge.js"]
   },
   "options_ui": {
     "page": "popup/settings.html"
@@ -34,5 +37,6 @@
     "gecko": {
       "id": "Shorts@Enhance.io"
     }
-  }
+  },
+  "default_locale": "en"
 }

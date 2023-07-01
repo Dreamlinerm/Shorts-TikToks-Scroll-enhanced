@@ -6,5 +6,12 @@
   "extensionDescription": {
     "message": "Auto play next video and short",
     "description": "Description of the extension"
+  },
+  "pageTitle": {
+    "message": "enhanced",
+    "description": "Title of the Settings Page"
+  },
+  "rateNow": {
+    "message": "Rate now!"
   }
 }
