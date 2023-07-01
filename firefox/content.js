@@ -80,7 +80,6 @@ if (isShort || isTikTok) {
       if (key == "settings") {
         settings = newValue;
         log(key, "Old value:", oldValue, ", new value:", newValue);
-        resetBadge();
       }
     }
   });
@@ -132,6 +131,7 @@ if (isShort || isTikTok) {
           const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
           const nextVideo = document.querySelector(selector);
           if (nextVideo) {
+            currentTime = 0;
             nextVideo.scrollIntoView();
             console.log("Clicked next video");
             increaseBadge();
