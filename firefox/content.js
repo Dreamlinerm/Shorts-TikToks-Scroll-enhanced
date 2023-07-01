@@ -27,8 +27,10 @@ if (isShort || isTikTok) {
   const defaultSettings = {
     settings: {
       TikTok: { autoScroll: true, speedSlider: true },
+      Shorts: { autoScroll: true, speedSlider: true },
       Statistics: {},
       General: { sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
+      Statistics: { SegmentsSkipped: 0 },
     },
   };
   let settings = defaultSettings.settings;
@@ -47,6 +49,9 @@ if (isShort || isTikTok) {
       if (isTikTok) {
         // start Observers depending on the settings
         TikTokObserver.observe(document, config);
+      } else if (isShort) {
+        // start Observers depending on the settings
+        ShortsObserver.observe(document, config);
       }
       let changedSettings = false;
       for (const key in defaultSettings.settings) {
@@ -100,6 +105,30 @@ if (isShort || isTikTok) {
           skipButton = document.querySelector("button[data-e2e='arrow-right']");
           if (skipButton) {
             skipButton.click();
+            console.log("Clicked next video");
+            increaseBadge();
+          }
+        }
+      }
+    }
+  }
+
+  // Shorts Observer
+  const ShortsObserver = new MutationObserver(TikTok);
+  function TikTok(mutations, observer) {
+    if (settings.Shorts.autoScroll) {
+      // auto scroll to next video when video finished
+      const reel = document.querySelector("ytd-reel-video-renderer[is-active='']");
+      const video = reel?.querySelector("video");
+      if (video) {
+        console.log("Video", video.currentTime, video.duration);
+        if (Math.round(video.currentTime * 10) / 10 >= Math.floor(video.duration * 10 - 1) / 10) {
+          const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
+          const nextVideo = document.querySelector(selector);
+          if (nextVideo) {
+            nextVideo.scrollIntoView();
+            console.log("Clicked next video");
+            increaseBadge();
           }
         }
       }

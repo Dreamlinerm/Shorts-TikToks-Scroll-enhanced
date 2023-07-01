@@ -67,6 +67,7 @@ const defaultSettings = {
     TikTok: { autoScroll: true, speedSlider: true },
     Statistics: {},
     General: { sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
+    Statistics: { SegmentsSkipped: 0 },
   },
 };
 let settings = defaultSettings.settings;
