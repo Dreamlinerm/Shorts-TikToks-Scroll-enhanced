@@ -93,6 +93,8 @@ if (isShort || isTikTok) {
   // default Options for the observer (which mutations to observe)
   const config = { attributes: true, childList: true, subtree: true };
 
+  // current time of the video
+  let currentTime = 0;
   // TikTok Observer
   const TikTokObserver = new MutationObserver(TikTok);
   function TikTok(mutations, observer) {
@@ -100,7 +102,8 @@ if (isShort || isTikTok) {
       // auto scroll to next video when video finished
       const video = document.querySelector("video");
       if (video) {
-        if (Math.round(video.currentTime * 10) / 10 == Math.round(video.duration * 10) / 10) {
+        if (currentTime > video.currentTime) {
+          currentTime = 0;
           console.log("Video finished");
           skipButton = document.querySelector("button[data-e2e='arrow-right']");
           if (skipButton) {
@@ -108,21 +111,23 @@ if (isShort || isTikTok) {
             console.log("Clicked next video");
             increaseBadge();
           }
+        } else {
+          currentTime = video.currentTime;
         }
       }
     }
   }
 
   // Youtube Observer
-  const YoutubeObserver = new MutationObserver(TikTok);
-  function TikTok(mutations, observer) {
+  const YoutubeObserver = new MutationObserver(Youtube);
+  function Youtube(mutations, observer) {
     if (settings.Youtube.autoScroll) {
       // auto scroll to next video when video finished
       const reel = document.querySelector("ytd-reel-video-renderer[is-active='']");
       const video = reel?.querySelector("video");
       if (video) {
-        console.log("Video", video.currentTime, video.duration);
-        if (Math.round(video.currentTime * 10) / 10 >= Math.floor(video.duration * 10 - 1) / 10) {
+        if (currentTime > video.currentTime) {
+          currentTime = 0;
           const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
           const nextVideo = document.querySelector(selector);
           if (nextVideo) {
@@ -130,6 +135,8 @@ if (isShort || isTikTok) {
             console.log("Clicked next video");
             increaseBadge();
           }
+        } else {
+          currentTime = video.currentTime;
         }
       }
     }
