@@ -93,8 +93,6 @@ if (isShort || isTikTok) {
   // default Options for the observer (which mutations to observe)
   const config = { attributes: true, childList: true, subtree: true };
 
-  // current time of the video
-  let currentTime = 0;
   // TikTok Observer
   const TikTokObserver = new MutationObserver(TikTok);
   function TikTok(mutations, observer) {
@@ -102,8 +100,7 @@ if (isShort || isTikTok) {
       // auto scroll to next video when video finished
       const video = document.querySelector("video");
       if (video) {
-        if (currentTime > video.currentTime) {
-          currentTime = 0;
+        if (Math.round(video.currentTime * 10) / 10 == Math.round(video.duration * 10) / 10) {
           console.log("Video finished");
           skipButton = document.querySelector("button[data-e2e='arrow-right']");
           if (skipButton) {
@@ -111,13 +108,14 @@ if (isShort || isTikTok) {
             console.log("Clicked next video");
             increaseBadge();
           }
-        } else {
-          currentTime = video.currentTime;
         }
       }
     }
   }
 
+  // current time of the video
+  let currentTime = 0;
+  let currentVideoId = "";
   // Youtube Observer
   const YoutubeObserver = new MutationObserver(Youtube);
   function Youtube(mutations, observer) {
@@ -126,8 +124,11 @@ if (isShort || isTikTok) {
       const reel = document.querySelector("ytd-reel-video-renderer[is-active='']");
       const video = reel?.querySelector("video");
       if (video) {
+        if (currentVideoId != reel.getAttribute("id")) {
+          currentTime = video.currentTime;
+          currentVideoId = reel.getAttribute("id");
+        }
         if (currentTime > video.currentTime) {
-          currentTime = 0;
           const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
           const nextVideo = document.querySelector(selector);
           if (nextVideo) {
