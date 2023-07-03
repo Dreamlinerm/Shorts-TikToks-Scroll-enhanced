@@ -34,7 +34,10 @@ if (isShort || isTikTok) {
     },
   };
   let settings = defaultSettings.settings;
-  let lastAdTimeText = "";
+  let videoSpeed;
+  async function setVideoSpeed(speed) {
+    videoSpeed = speed;
+  }
   resetBadge();
   browser.storage.sync.get("settings", function (result) {
     settings = result.settings;
@@ -118,29 +121,84 @@ if (isShort || isTikTok) {
   // Youtube Observer
   const YoutubeObserver = new MutationObserver(Youtube);
   function Youtube(mutations, observer) {
-    if (settings.Youtube.autoScroll) {
+    const reel = document.querySelector("ytd-reel-video-renderer[is-active='']");
+    const video = reel?.querySelector("video");
+    if (settings.Youtube.autoScroll && video) {
       // auto scroll to next video when video finished
-      const reel = document.querySelector("ytd-reel-video-renderer[is-active='']");
-      const video = reel?.querySelector("video");
-      if (video) {
-        if (currentVideoId != reel.getAttribute("id")) {
-          currentTime = video.currentTime;
-          currentVideoId = reel.getAttribute("id");
+      if (currentVideoId != reel.getAttribute("id")) {
+        currentTime = video.currentTime;
+        currentVideoId = reel.getAttribute("id");
+      }
+      if (currentTime > video.currentTime) {
+        const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
+        const nextVideo = document.querySelector(selector);
+        if (nextVideo) {
+          currentTime = 0;
+          nextVideo.scrollIntoView();
+          console.log("Clicked next video");
+          increaseBadge();
         }
-        if (currentTime > video.currentTime) {
-          const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
-          const nextVideo = document.querySelector(selector);
-          if (nextVideo) {
-            currentTime = 0;
-            nextVideo.scrollIntoView();
-            console.log("Clicked next video");
-            increaseBadge();
+      } else {
+        currentTime = video.currentTime;
+      }
+    }
+    if (settings.Youtube.speedSlider) {
+      if (video) {
+        let alreadySlider = reel.querySelector("ytd-shorts-player-controls").querySelector("#videoSpeedSlider");
+        if (!alreadySlider) {
+          let position = reel.querySelector("ytd-shorts-player-controls");
+          if (position) {
+            videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
+
+            let slider = document.createElement("input");
+            slider.id = "videoSpeedSlider";
+            slider.type = "range";
+            slider.min = settings.General.sliderMin;
+            slider.max = settings.General.sliderMax;
+            slider.value = videoSpeed * 10;
+            slider.step = settings.General.sliderSteps;
+            slider.style = "pointer-events: auto;background: rgb(221, 221, 221);display: none;width:150px;";
+
+            let speed = document.createElement("p");
+            speed.id = "videoSpeed";
+            speed.textContent = videoSpeed ? videoSpeed + "x" : "1x";
+            // makes the button clickable
+            // speed.setAttribute("class", "control-icon-btn");
+            speed.style = "font-size:2em;color:#f9f9f9;pointer-events: auto;padding: 0 5px;";
+
+            position.insertBefore(speed, position.children[position.children.length - 1]);
+            position.insertBefore(slider, position.children[position.children.length - 1]);
+
+            if (videoSpeed) video.playbackRate = videoSpeed;
+            speed.onclick = function () {
+              if (slider.style.display === "block") slider.style.display = "none";
+              else slider.style.display = "block";
+            };
+            slider.oninput = function () {
+              speed.textContent = this.value / 10 + "x";
+              video.playbackRate = this.value / 10;
+              setVideoSpeed(this.value / 10);
+            };
           }
         } else {
-          currentTime = video.currentTime;
+          // need to resync the slider with the video sometimes
+          let speed = reel.querySelector("ytd-shorts-player-controls").querySelector("#videoSpeed");
+          if (video.playbackRate != videoSpeed) {
+            video.playbackRate = videoSpeed;
+          }
+          if (alreadySlider.value != videoSpeed * 10) {
+            alreadySlider.value = videoSpeed * 10;
+            speed.textContent = videoSpeed + "x";
+          }
         }
       }
     }
+    // else {
+    //   let Sliders = document.querySelectorAll("#videoSpeedSlider");
+    //   let Speeds = document.querySelectorAll("#videoSpeed");
+    //   for (slider of Sliders) slider.remove();
+    //   for (speed of Speeds) speed.remove();
+    // }
   }
 
   // Badge functions
