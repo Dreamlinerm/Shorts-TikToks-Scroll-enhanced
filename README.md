@@ -1,22 +1,89 @@
 <div align="center">
 
-<img src="firefox/icons/NetflixAmazon%20Auto-Skip.svg" width="10%">
+<img src="firefox/icons/shorts.svg" width="10%">
 
-# Netflix/Prime Auto-Skip
+# Streaming enhanced
 
-Auto play next video and short
+## Auto play next short change speed, volume and more
 
+<!-- <a href="https://addons.mozilla.org/firefox/addon/netflix-prime-auto-skip/">
+<img src="Logos/firefox.svg" width="20px">
+</a>
+<img src="https://img.shields.io/amo/dw/NetflixPrime@Autoskip.io" >
+<img src="https://img.shields.io/amo/users/NetflixPrime@Autoskip.io" >
+<img src="https://img.shields.io/badge/installs-1253-informational" >
+<img src="https://img.shields.io/amo/stars/NetflixPrime@Autoskip.io?color=e60010" >
+<br>
+<a href="https://chrome.google.com/webstore/detail/streaming-enhanced-netfli/akaimhgappllmlkadblbdknhbfghdgle">
+<img src="Logos/chrome.svg" width="20px">
+</a>
+<img src="https://img.shields.io/chrome-web-store/users/akaimhgappllmlkadblbdknhbfghdgle" >
+<img src="https://img.shields.io/badge/installs-620-informational" >
+<img src="https://img.shields.io/chrome-web-store/stars/akaimhgappllmlkadblbdknhbfghdgle?color=e60010" > -->
 </div>
 
-## Installation
+## Install in Browser
 
-Download the extension here for [Firefox](https://addons.mozilla.org/) or [Chrome](https://chrome.google.com/).
+<a href="https://addons.mozilla.org/firefox/addon/netflix-prime-auto-skip/">
+<img src="Logos/firefox.svg" width="8%" alt="firefox">
+</a>
+<a href="https://chrome.google.com/webstore/detail/streaming-enhanced-netfli/akaimhgappllmlkadblbdknhbfghdgle">
+<img src="Logos/chrome.svg" width="8%" alt="chrome">
+</a>
+<a href="https://chrome.google.com/webstore/detail/streaming-enhanced-netfli/akaimhgappllmlkadblbdknhbfghdgle">
+<img src="Logos/microsoft-edge-1.svg" width="8%" alt="chrome">
+</a>
+
+
+## Install on Android
+<div style="display:flex;flex-direction:column">
+        <a href="https://play.google.com/store/apps/details?id=com.kiwibrowser.browser">
+          <img src="Logos/kiwi.webp" width="8%">
+          <br /><b>Kiwi Browser</b>
+          </a>
+</div>
+
+Download [Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser) or similar to be able to install the chrome addon. But Netflix cannot be watched on android.
+
+
+It will work together with other skippers, but it may behave unexpectedly.
+
+## Supported Platforms
+
+<table>
+    <tr>
+      <td align="center" valign="top" width="14.28%">
+        <img src="icons/tiktok-icon-2.svg" width="20%">
+        <img src="icons/youtube-shorts.svg" width="20%">
+      </td>
+    </tr>
+</table>
+
 
 
 ## What it does
 
-....
+The script, "skipper.js", is injected into all urls containing "amazon.\*/\*/video" or "netflix.com" or "disneyplus.com" or "hotstar.com".
 
+It automatically skips Ads, intros, Credits, recaps, and anything else you don't want to watch on Netflix, Prime video and Disney Plus & Hotstar.
+
+
+## ✨ Features
+
+On TickTok and Youtube shorts it automatically:
+
+<ul>
+<li>scrolls to next short</li>
+</ul>
+
+On Youtube it also:
+
+<ul>
+<li>Skips Recaps</li>
+<li>Add Speed Slider</li>
+<li>Adds Volume Slider</li>
+<li>Skip low likes</li>
+</ul>
 
 ## Contributing
 
@@ -24,8 +91,9 @@ Everyone is welcome to contribute!
 
 If you have any suggestions or Bugs, please open an issue.
 
-Buy me a coffee! [PayPal](https://paypal.me/MarvinKrebber)
+## 💕 Enjoying Streaming enhanced?
 
+Buy me a coffee! [PayPal](https://paypal.me/MarvinKrebber)
 
 ## Settings
 
@@ -35,17 +103,12 @@ Import and Export all Settings.
 
 See Statistics.
   
-
-## How it works
-
-....
-
 ## Run the Extension
 ```cd firefox```
 ### Install web-ext
 ```npm install --global web-ext```
 ### Run
-```web-ext run```
+```web-ext run --devtools```
 ### Build
 copy firefox files to chrome and replace "browser" with "chrome"
 
@@ -53,4 +116,4 @@ copy firefox files to chrome and replace "browser" with "chrome"
 
 ## Disclaimer
 
-Youtube is a trademark and the author of this addon is not affiliated with this company.
+TikTock, Shorts,Reels are trademarks and the author of this addon is not affiliated with these companies.
