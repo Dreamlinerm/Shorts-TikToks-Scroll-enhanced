@@ -83,6 +83,7 @@ On Youtube it also:
 <li>Add Speed Slider</li>
 <li>Adds Volume Slider</li>
 <li>Skip low likes</li>
+<li>Playback control with right and left arrow keys</li>
 </ul>
 
 ## Contributing
