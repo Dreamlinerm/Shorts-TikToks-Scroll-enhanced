@@ -29,7 +29,7 @@ if (isShort || isTikTok) {
       TikTok: { autoScroll: true, speedSlider: true },
       Youtube: { autoScroll: true, speedSlider: true, lowViews: true },
       Statistics: {},
-      General: { lowViewsUpvotes: 5000000, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
+      General: { lowViewsUpvotes: 100, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
       Statistics: { SegmentsSkipped: 0 },
     },
   };
@@ -226,7 +226,7 @@ if (isShort || isTikTok) {
         if (nextVideo) {
           currentTime = 0;
           nextVideo.scrollIntoView();
-          console.log("Clicked next video", upvotes, upvoteText.replace("K", "000").replace("M", "000000"), upvoteText);
+          console.log("Too few upvotes:", upvotes);
           increaseBadge();
         }
       }

@@ -65,9 +65,9 @@ if (url.includes("#")) Menu(url.split("#")[1]);
 const defaultSettings = {
   settings: {
     TikTok: { autoScroll: true, speedSlider: true },
-    Youtube: { autoScroll: true, speedSlider: true },
+    Youtube: { autoScroll: true, speedSlider: true, lowViews: true },
     Statistics: {},
-    General: { sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
+    General: { lowViewsUpvotes: 100, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
     Statistics: { SegmentsSkipped: 0 },
   },
 };
@@ -138,11 +138,13 @@ function setCheckboxesToSettings() {
 
   //  -------------      Youtube        ---------------------------------------
   button = document.querySelector("#YoutubeSkips");
-  if (button) button.checked = settings?.Youtube.autoScroll && settings?.Youtube.speedSlider;
+  if (button) button.checked = settings?.Youtube.autoScroll && settings?.Youtube.speedSlider && settings?.Youtube.lowViews;
   button = document.querySelector("#YoutubeAutoScroll");
   if (button) button.checked = settings?.Youtube.autoScroll;
   button = document.querySelector("#YoutubeSpeedSlider");
   if (button) button.checked = settings?.Youtube.speedSlider;
+  button = document.querySelector("#YoutubeLowViews");
+  if (button) button.checked = settings?.Youtube.lowViews;
 
   // general video settings
 
@@ -236,9 +238,10 @@ function listenForClicks() {
 
     //  -------------      Youtube        ---------------------------------------
     else if (e.target.id === "YoutubeSkips") {
-      const YoutubeSkips = !(settings?.Youtube.autoScroll && settings?.Youtube.speedSlider);
+      const YoutubeSkips = !(settings?.Youtube.autoScroll && settings?.Youtube.speedSlider && settings?.Youtube.lowViews);
       settings.Youtube.autoScroll = YoutubeSkips;
       settings.Youtube.speedSlider = YoutubeSkips;
+      settings.Youtube.lowViews = YoutubeSkips;
       setSettings("All YoutubeSkips");
     } else if (e.target.id === "YoutubeAutoScroll") {
       settings.Youtube.autoScroll = !settings.Youtube.autoScroll;
@@ -246,6 +249,9 @@ function listenForClicks() {
     } else if (e.target.id === "YoutubeSpeedSlider") {
       settings.Youtube.speedSlider = !settings.Youtube.speedSlider;
       setSettings("YoutubeSpeedSlider");
+    } else if (e.target.id === "YoutubeLowViews") {
+      settings.Youtube.lowViews = !settings.Youtube.lowViews;
+      setSettings("YoutubeLowViews");
     }
 
     //  -------------      Video        ---------------------------------------

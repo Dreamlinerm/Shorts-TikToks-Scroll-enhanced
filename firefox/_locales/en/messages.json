@@ -36,6 +36,12 @@
   "AutoScrollSwitchDescription": {
     "message": "Auto scroll to next short"
   },
+  "UpvotesSwitch": {
+    "message": "Skip low likes:"
+  },
+  "UpvotesSwitchDescription": {
+    "message": "Auto scroll past shorts with to few likes"
+  },
   "backup": {
     "message": "Backup/Reset"
   },
