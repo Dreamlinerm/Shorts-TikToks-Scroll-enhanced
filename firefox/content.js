@@ -27,14 +27,14 @@ if (isShort || isTikTok) {
   const defaultSettings = {
     settings: {
       TikTok: { autoScroll: true, speedSlider: true },
-      Youtube: { autoScroll: true, speedSlider: true },
+      Youtube: { autoScroll: true, speedSlider: true, lowViews: true },
       Statistics: {},
-      General: { sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
+      General: { lowViewsUpvotes: 5000000, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
       Statistics: { SegmentsSkipped: 0 },
     },
   };
   let settings = defaultSettings.settings;
-  let videoSpeed;
+  let videoSpeed = 1;
   async function setVideoSpeed(speed) {
     videoSpeed = speed;
   }
@@ -199,6 +199,38 @@ if (isShort || isTikTok) {
     //   for (slider of Sliders) slider.remove();
     //   for (speed of Speeds) speed.remove();
     // }
+    if (settings.Youtube.lowViews && reel) {
+      let upvoteText = reel.querySelector("ytd-like-button-renderer").querySelector("span").textContent;
+      // convert K and M to numbers
+      // convert the number 8.1K to 8100
+      function convertToNumber(str) {
+        const num = parseFloat(str);
+
+        if (isNaN(num)) {
+          return null; // return NaN if the input cannot be parsed as a number
+        }
+
+        if (str.toUpperCase().includes("K")) {
+          return num * 1000; // multiply by 1000 to convert from K to the actual number
+        }
+        if (str.toUpperCase().includes("M")) {
+          return num * 1000000; // multiply by 1000000 to convert from M to the actual number
+        }
+        return num; // return the number as is if no conversion is needed
+      }
+
+      let upvotes = convertToNumber(upvoteText);
+      if (upvotes && upvotes < settings.General.lowViewsUpvotes) {
+        const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
+        const nextVideo = document.querySelector(selector);
+        if (nextVideo) {
+          currentTime = 0;
+          nextVideo.scrollIntoView();
+          console.log("Clicked next video", upvotes, upvoteText.replace("K", "000").replace("M", "000000"), upvoteText);
+          increaseBadge();
+        }
+      }
+    }
   }
 
   // Badge functions
