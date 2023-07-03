@@ -1,0 +1,78 @@
+{
+  "extensionName": {
+    "message": "Shorts/TikToks Scroll enhanced",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Auto play next short change speed, volume and more",
+    "description": "Description of the extension"
+  },
+  "pageTitle": {
+    "message": "enhanced",
+    "description": "Title of the Settings Page"
+  },
+  "settingsTitle": {
+    "message": "Settings - Shorts"
+  },
+  "defaultPageTitle": {
+    "message": "All turned off Features by default"
+  },
+  "defaultPageDescription": {
+    "message": "Every feature which is turned off by default either because they are confusing if they were turned on or they are in beta"
+  },
+  "rateNow": {
+    "message": "Rate now!"
+  },
+  "PageSpecificTitle": {
+    "message": "$service$ specific",
+    "placeholders": {
+      "service": {
+        "content": "$1",
+        "example": "Netflix"
+      }
+    }
+  },
+  "SliderSwitch": {
+    "message": "Add Speed Slider:",
+    "description": "Add a speed slider feature switch"
+  },
+  "SliderSwitchDescription": {
+    "message": "Adding a speed adjustment slider to every video"
+  },
+  "AutoScrollSwitch": {
+    "message": "Auto scroll to next short:"
+  },
+  "AutoScrollSwitchDescription": {
+    "message": "Auto scroll to next short"
+  },
+  "UpvotesSwitch": {
+    "message": "Skip low likes:"
+  },
+  "UpvotesSwitchDescription": {
+    "message": "Auto scroll past shorts with to few likes"
+  },
+  "VolumeSwitch": {
+    "message": "Volume Slider:"
+  },
+  "VolumeSwitchDescription": {
+    "message": "Adding a volume slider to every video"
+  },
+  "backup": {
+    "message": "Backup/Reset"
+  },
+  "donate": {
+    "message": "Donate"
+  },
+  "ImportSettings": {
+    "message": "Import/Export all Settings"
+  },
+  "SaveSettings": {
+    "message": "Save Settings as file"
+  },
+  "UploadSettings": {
+    "message": "Upload settings"
+  },
+  "ResetAddon": {
+    "message": "Reset Addon to default"
+  }
+}
