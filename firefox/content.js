@@ -142,7 +142,7 @@ if (isShort || isTikTok) {
         currentTime = video.currentTime;
       }
     }
-    if (settings.Youtube.speedSlider) {
+    if (settings.Youtube.speedSlider && reel) {
       if (video) {
         let alreadySlider = reel.querySelector("ytd-shorts-player-controls").querySelector("#videoSpeedSlider");
         if (!alreadySlider) {
@@ -229,6 +229,127 @@ if (isShort || isTikTok) {
           console.log("Too few upvotes:", upvotes);
           increaseBadge();
         }
+      }
+    }
+    // convert this to javascript
+
+    if (video) {
+      let alreadySlider = reel.querySelector("ytd-reel-player-overlay-renderer").querySelector("#YoutubeAutoScroll");
+      if (!alreadySlider) {
+        // reel = document.querySelector("ytd-reel-video-renderer[is-active='']")
+        let position = reel.querySelector("ytd-reel-player-overlay-renderer").children[1];
+        if (position) {
+          // <label class="switch">
+          //           <input type="checkbox" id="YoutubeAutoScroll" />
+          //           <span class="slider round"></span>
+          //         </label>
+          let div = document.createElement("div");
+
+          let label = document.createElement("label");
+          label.class = "switch";
+          label.setAttribute("class", "switch");
+
+          let input = document.createElement("input");
+          input.type = "checkbox";
+          input.id = "YoutubeAutoScroll";
+          input.checked = settings.General.autoScroll;
+
+          let span = document.createElement("span");
+          span.setAttribute("class", "slider round");
+
+          label.appendChild(input);
+          label.appendChild(span);
+          let style = document.createElement("style");
+          style.type = "text/css";
+          style.innerHTML = `/* Switch styling */
+            label {
+              margin-left: auto;
+            }
+            /* The switch - the box around the slider */
+            .switch {
+              position: relative;
+              display: inline-block;
+              width: 48px;
+              height: 27px;
+            }
+            
+            /* Hide default HTML checkbox */
+            .switch input {
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+            
+            /* The slider */
+            .slider {
+              position: absolute;
+              cursor: pointer;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: #3f3f3f;
+              -webkit-transition: 0.4s;
+              transition: 0.4s;
+            }
+            
+            .slider:before {
+              position: absolute;
+              content: "";
+              height: 19px;
+              width: 19px;
+              left: 4px;
+              bottom: 4px;
+              background-color: white;
+              /* -webkit-transition: 0.4s;
+               transition: 0.4s; */
+            }
+            
+            input:checked + .slider {
+              background-color: #006303;
+            }
+            /* change color on hover */
+            input:checked + .slider:hover {
+              background-color: #00a205;
+            }
+            
+            input:checked + .slider:before {
+              -webkit-transform: translateX(18px);
+              -ms-transform: translateX(18px);
+              transform: translateX(18px);
+            }
+            
+            /* Rounded sliders */
+            .slider.round {
+              border-radius: 34px;
+            }
+            
+            .slider.round:before {
+              border-radius: 50%;
+            }`;
+          document.querySelector("head").appendChild(style);
+          div.appendChild(label);
+
+          let p = document.createElement("span");
+          p.textContent = "Autoplay";
+          p.style = "color:white;font-size: 1.4rem;line-height: 2rem;margin-top: 4px;display: block;text-align: center;";
+          // p.setAttribute(
+          //   "class",
+          //   "yt-core-attributed-string yt-core-attributed-string--white-space-pre-wrap yt-core-attributed-string--text-alignment-center yt-core-attributed-string--word-wrapping"
+          // );
+          div.appendChild(p);
+          position.insertBefore(div, position.firstChild);
+          label.onclick = function () {
+            settings.Youtube.autoScroll = !settings.Youtube.autoScroll;
+            browser.storage.sync.set({ settings });
+          };
+        }
+      } else {
+        alreadySlider.checked = settings.Youtube.autoScroll;
+        alreadySlider.onclick = function () {
+          settings.Youtube.autoScroll = !settings.Youtube.autoScroll;
+          browser.storage.sync.set({ settings });
+        };
       }
     }
   }
