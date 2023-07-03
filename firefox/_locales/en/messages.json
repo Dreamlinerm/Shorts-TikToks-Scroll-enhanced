@@ -1,6 +1,6 @@
 {
   "extensionName": {
-    "message": "Shorts/Tiktoks/Reels Scroll enhanced",
+    "message": "Shorts/TikToks Scroll enhanced",
     "description": "Name of the extension"
   },
   "extensionDescription": {
@@ -10,6 +10,15 @@
   "pageTitle": {
     "message": "enhanced",
     "description": "Title of the Settings Page"
+  },
+  "settingsTitle": {
+    "message": "Settings - Shorts"
+  },
+  "defaultPageTitle": {
+    "message": "All turned off Features by default"
+  },
+  "defaultPageDescription": {
+    "message": "Every feature which is turned off by default either because they are confusing if they were turned on or they are in beta"
   },
   "rateNow": {
     "message": "Rate now!"
