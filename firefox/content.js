@@ -372,7 +372,7 @@ if (isShort || isTikTok) {
             slider.max = 1;
             slider.value = videoVolume;
             slider.step = 0.01;
-            slider.style = "opacity:0.6;pointer-events: auto;background: rgb(221, 221, 221); position: absolute;right: 16px;top: 40px;";
+            slider.style = "height: 100px;opacity:0.6;pointer-events: auto;background: rgb(221, 221, 221); position: absolute;right: 16px;top: 40px;";
             position.appendChild(slider, position.children[position.children.length - 1]);
 
             if (videoVolume) video.volume = videoVolume;
@@ -383,6 +383,7 @@ if (isShort || isTikTok) {
             };
           }
         } else {
+          videoVolume = videoVolume ? videoVolume : video.volume;
           // need to resync the slider with the video sometimes
           if (video.volume != videoVolume) {
             video.volume = videoVolume;
@@ -392,6 +393,20 @@ if (isShort || isTikTok) {
           }
         }
       }
+    }
+  }
+  // on left right arrow 5 sec skip
+  document.onkeydown = checkKey;
+  function checkKey(e) {
+    const video = document.querySelector("ytd-reel-video-renderer[is-active='']")?.querySelector("video");
+    if (!video) return;
+    if (e.keyCode == "37") {
+      currentTime = video.currentTime - 5 >= 0 ? video.currentTime - 5 : 0;
+      video.currentTime -= 5;
+      console.log("left arrow");
+    } else if (e.keyCode == "39") {
+      video.currentTime += 5;
+      console.log("right arrow");
     }
   }
 
