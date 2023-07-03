@@ -65,7 +65,7 @@ if (url.includes("#")) Menu(url.split("#")[1]);
 const defaultSettings = {
   settings: {
     TikTok: { autoScroll: true, speedSlider: true },
-    Youtube: { autoScroll: true, speedSlider: true, lowViews: true },
+    Youtube: { autoScroll: true, speedSlider: true, lowViews: true, volumeSlider: true },
     Statistics: {},
     General: { lowViewsUpvotes: 200, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
     Statistics: { SegmentsSkipped: 0 },
@@ -138,13 +138,15 @@ function setCheckboxesToSettings() {
 
   //  -------------      Youtube        ---------------------------------------
   button = document.querySelector("#YoutubeSkips");
-  if (button) button.checked = settings?.Youtube.autoScroll && settings?.Youtube.speedSlider && settings?.Youtube.lowViews;
+  if (button) button.checked = settings?.Youtube.autoScroll && settings?.Youtube.speedSlider && settings?.Youtube.lowViews && settings?.Youtube.volumeSlider;
   button = document.querySelector("#YoutubeAutoScroll");
   if (button) button.checked = settings?.Youtube.autoScroll;
   button = document.querySelector("#YoutubeSpeedSlider");
   if (button) button.checked = settings?.Youtube.speedSlider;
   button = document.querySelector("#YoutubeLowViews");
   if (button) button.checked = settings?.Youtube.lowViews;
+  button = document.querySelector("#YoutubeVolumeSlider");
+  if (button) button.checked = settings?.Youtube.volumeSlider;
 
   // general video settings
 
@@ -238,10 +240,11 @@ function listenForClicks() {
 
     //  -------------      Youtube        ---------------------------------------
     else if (e.target.id === "YoutubeSkips") {
-      const YoutubeSkips = !(settings?.Youtube.autoScroll && settings?.Youtube.speedSlider && settings?.Youtube.lowViews);
+      const YoutubeSkips = !(settings?.Youtube.autoScroll && settings?.Youtube.speedSlider && settings?.Youtube.lowViews && settings?.Youtube.volumeSlider);
       settings.Youtube.autoScroll = YoutubeSkips;
       settings.Youtube.speedSlider = YoutubeSkips;
       settings.Youtube.lowViews = YoutubeSkips;
+      settings.Youtube.volumeSlider = YoutubeSkips;
       setSettings("All YoutubeSkips");
     } else if (e.target.id === "YoutubeAutoScroll") {
       settings.Youtube.autoScroll = !settings.Youtube.autoScroll;
@@ -252,6 +255,9 @@ function listenForClicks() {
     } else if (e.target.id === "YoutubeLowViews") {
       settings.Youtube.lowViews = !settings.Youtube.lowViews;
       setSettings("YoutubeLowViews");
+    } else if (e.target.id === "YoutubeVolumeSlider") {
+      settings.Youtube.volumeSlider = !settings.Youtube.volumeSlider;
+      setSettings("YoutubeVolumeSlider");
     }
 
     //  -------------      Video        ---------------------------------------

@@ -27,16 +27,20 @@ if (isShort || isTikTok) {
   const defaultSettings = {
     settings: {
       TikTok: { autoScroll: true, speedSlider: true },
-      Youtube: { autoScroll: true, speedSlider: true, lowViews: true },
+      Youtube: { autoScroll: true, speedSlider: true, lowViews: true, volumeSlider: true },
       Statistics: {},
-      General: { lowViewsUpvotes: 100, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
+      General: { lowViewsUpvotes: 200, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
       Statistics: { SegmentsSkipped: 0 },
     },
   };
   let settings = defaultSettings.settings;
   let videoSpeed = 1;
+  let videoVolume;
   async function setVideoSpeed(speed) {
     videoSpeed = speed;
+  }
+  async function setVideoVolume(volume) {
+    videoVolume = volume;
   }
   resetBadge();
   browser.storage.sync.get("settings", function (result) {
@@ -200,7 +204,7 @@ if (isShort || isTikTok) {
     //   for (speed of Speeds) speed.remove();
     // }
     if (settings.Youtube.lowViews && reel) {
-      let upvoteText = reel.querySelector("ytd-like-button-renderer").querySelector("span").textContent;
+      let upvoteText = reel.querySelector("ytd-like-button-renderer")?.querySelector("span").textContent;
       // convert K and M to numbers
       // convert the number 8.1K to 8100
       function convertToNumber(str) {
@@ -232,7 +236,7 @@ if (isShort || isTikTok) {
       }
     }
     // convert this to javascript
-
+    // autoplay switch on page
     if (video) {
       let alreadySlider = reel.querySelector("ytd-reel-player-overlay-renderer").querySelector("#YoutubeAutoScroll");
       if (!alreadySlider) {
@@ -350,6 +354,43 @@ if (isShort || isTikTok) {
           settings.Youtube.autoScroll = !settings.Youtube.autoScroll;
           browser.storage.sync.set({ settings });
         };
+      }
+    }
+    if (settings.Youtube.volumeSlider && reel) {
+      if (video) {
+        let alreadySlider = reel.querySelector("ytd-shorts-player-controls")?.querySelector("#videoVolumeSlider");
+        if (!alreadySlider) {
+          let position = reel.querySelector("ytd-shorts-player-controls");
+          if (position) {
+            videoVolume = videoVolume ? videoVolume : video.volume;
+
+            let slider = document.createElement("input");
+            slider.id = "videoVolumeSlider";
+            slider.setAttribute("orient", "vertical");
+            slider.type = "range";
+            slider.min = 0;
+            slider.max = 1;
+            slider.value = videoVolume;
+            slider.step = 0.01;
+            slider.style = "opacity:0.6;pointer-events: auto;background: rgb(221, 221, 221); position: absolute;right: 16px;top: 40px;";
+            position.appendChild(slider, position.children[position.children.length - 1]);
+
+            if (videoVolume) video.volume = videoVolume;
+
+            slider.oninput = function () {
+              video.volume = this.value;
+              setVideoVolume(this.value);
+            };
+          }
+        } else {
+          // need to resync the slider with the video sometimes
+          if (video.volume != videoVolume) {
+            video.volume = videoVolume;
+          }
+          if (alreadySlider.value != videoVolume) {
+            alreadySlider.value = videoVolume;
+          }
+        }
       }
     }
   }

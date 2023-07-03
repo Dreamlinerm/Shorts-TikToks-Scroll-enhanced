@@ -42,6 +42,12 @@
   "UpvotesSwitchDescription": {
     "message": "Auto scroll past shorts with to few likes"
   },
+  "VolumeSwitch": {
+    "message": "Volume Slider:"
+  },
+  "VolumeSwitchDescription": {
+    "message": "Adding a volume slider to every video"
+  },
   "backup": {
     "message": "Backup/Reset"
   },
