@@ -125,6 +125,7 @@ if (isYoutube || isTikTok) {
   // Youtube Observer
   const YoutubeObserver = new MutationObserver(Youtube);
   function Youtube(mutations, observer) {
+    url = window.location.href;
     const isShort = /shorts/i.test(url);
     if (isShort) {
       const reel = document.querySelector("ytd-reel-video-renderer[is-active='']");
