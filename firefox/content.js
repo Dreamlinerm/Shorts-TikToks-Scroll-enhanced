@@ -141,45 +141,26 @@ if (isYoutube || isTikTok) {
       else video = document.querySelector("video");
 
       if (settings.Youtube.autoScroll && video) {
-        if (!isAndroid) {
-          // auto scroll to next video when video finished
-          if (currentVideoId != reel.getAttribute("id")) {
-            currentTime = video.currentTime;
-            currentVideoId = reel.getAttribute("id");
-          }
-          if (currentTime > video.currentTime) {
-            const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
-            const nextVideo = document.querySelector(selector);
-            if (nextVideo) {
-              currentTime = 0;
-              nextVideo.scrollIntoView();
-              console.log("Clicked next video");
-              increaseBadge();
-            }
-          } else {
-            currentTime = video.currentTime;
-          }
-        } else {
-          if (currentVideoId != video.src) {
-            currentTime = video.currentTime;
-            currentVideoId = video.src;
-          }
-          if (currentTime > video.currentTime) {
-            currentTime = 0;
-            document.dispatchEvent(
-              new KeyboardEvent("keydown", {
-                key: "arrowdown",
-                keyCode: 39,
-                code: "ArrowDown",
-                which: 39,
-                shiftKey: false,
-                ctrlKey: false,
-                metaKey: false,
-              })
-            );
-            console.log("Clicked next video", 39);
-          } else currentTime = video.currentTime;
+        if (currentVideoId != video.src) {
+          currentTime = video.currentTime;
+          currentVideoId = video.src;
         }
+        if (currentTime > video.currentTime) {
+          currentTime = 0;
+          document.dispatchEvent(
+            new KeyboardEvent("keydown", {
+              key: "arrowdown",
+              keyCode: 39,
+              code: "ArrowDown",
+              which: 39,
+              shiftKey: false,
+              ctrlKey: false,
+              metaKey: false,
+            })
+          );
+          console.log("Clicked next video");
+          increaseBadge();
+        } else currentTime = video.currentTime;
       }
 
       if (settings.Youtube.speedSlider && reel) {
@@ -258,35 +239,50 @@ if (isYoutube || isTikTok) {
       //   for (speed of Speeds) speed.remove();
       // }
       if (settings.Youtube.lowViews && reel) {
-        let upvoteText = reel.querySelector("ytd-like-button-renderer")?.querySelector("span").textContent;
+        let upvoteText;
+        if (!isAndroid) upvoteText = reel.querySelector("ytd-like-button-renderer")?.querySelector("span").textContent;
+        else upvoteText = document.querySelector("ytm-like-button-renderer")?.querySelector("span").textContent;
         // convert K and M to numbers
         // convert the number 8.1K to 8100
         function convertToNumber(str) {
+          if (!str) return;
           if (str.toUpperCase().includes("K")) {
-            const num = parseFloat();
+            const num = parseFloat(str);
             return num * 1000; // multiply by 1000 to convert from K to the actual number
           } else if (str.toUpperCase().includes("M")) {
-            const num = parseFloat();
+            const num = parseFloat(str);
             return num * 1000000; // multiply by 1000000 to convert from M to the actual number
           } else {
             // on german youtube they write 509.000 instead of k
-            const num = Number(str.replace("."));
+            return (num = Number(str.replace(".", "")));
           }
-          if (isNaN(num)) {
-            return null; // return NaN if the input cannot be parsed as a number
-          }
-          return num; // return the number as is if no conversion is needed
         }
 
         let upvotes = convertToNumber(upvoteText);
         if (upvotes && upvotes < settings.General.lowViewsUpvotes) {
-          const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
-          const nextVideo = document.querySelector(selector);
-          if (nextVideo) {
+          if (!isAndroid) {
+            const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
+            const nextVideo = document.querySelector(selector);
+            if (nextVideo) {
+              currentTime = 0;
+              nextVideo.scrollIntoView();
+              console.log("Too few upvotes:", upvotes);
+              increaseBadge();
+            }
+          } else {
             currentTime = 0;
-            nextVideo.scrollIntoView();
+            document.dispatchEvent(
+              new KeyboardEvent("keydown", {
+                key: "arrowdown",
+                keyCode: 39,
+                code: "ArrowDown",
+                which: 39,
+                shiftKey: false,
+                ctrlKey: false,
+                metaKey: false,
+              })
+            );
             console.log("Too few upvotes:", upvotes);
-            increaseBadge();
           }
         }
       }
