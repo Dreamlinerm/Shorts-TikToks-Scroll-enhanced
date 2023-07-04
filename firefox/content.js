@@ -20,11 +20,12 @@ const isYoutube = /youtube/i.test(url);
 const isTikTok = /tiktok/i.test(url);
 
 let isEdge = /edg/i.test(ua);
+let isChrome = /chrome/i.test(ua);
 let isFirefox = /firefox/i.test(ua);
 
 const isAndroid = /android/i.test(ua);
 
-const version = "1.0.2";
+const version = "1.0.3";
 if (isYoutube || isTikTok) {
   // global variables in localStorage
   const defaultSettings = {
@@ -430,6 +431,7 @@ if (isYoutube || isTikTok) {
               slider.step = 0.01;
               let style = "height: 100px;opacity:0.6;pointer-events: auto;background: rgb(221, 221, 221); position: absolute;right: 16px;top: 40px;";
               if (isAndroid) style += "z-index:999;position: absolute;right: 0px;top: 40px;";
+              if (isChrome) style += "-webkit-appearance: slider-vertical;width: 20px;";
               slider.style = style;
               if (!isAndroid) position.appendChild(slider, position.children[position.children.length - 1]);
               else document.querySelector("body").appendChild(slider);
