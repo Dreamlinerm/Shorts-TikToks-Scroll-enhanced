@@ -24,7 +24,7 @@ let isFirefox = /firefox/i.test(ua);
 
 const isAndroid = /android/i.test(ua);
 
-const version = "1.0.1";
+const version = "1.0.2";
 if (isYoutube || isTikTok) {
   // global variables in localStorage
   const defaultSettings = {
