@@ -21,6 +21,9 @@ const isTikTok = /tiktok/i.test(url);
 
 let isEdge = /edg/i.test(ua);
 let isFirefox = /firefox/i.test(ua);
+
+const isAndroid = /android/i.test(ua);
+
 const version = "1.0.1";
 if (isYoutube || isTikTok) {
   // global variables in localStorage
@@ -48,6 +51,8 @@ if (isYoutube || isTikTok) {
     console.log("Youtube Enhancer");
     console.log("version:", version);
     console.log("Settings", settings);
+    if (isAndroid) console.log("Android");
+
     if (isYoutube) console.log("Page %cYoutube shorts", "color: #e60010;");
     else if (isTikTok) console.log("Page %cTikTok", "color: #e60010;");
     if (typeof settings !== "object") {
@@ -128,32 +133,64 @@ if (isYoutube || isTikTok) {
     url = window.location.href;
     const isShort = /shorts/i.test(url);
     if (isShort) {
-      const reel = document.querySelector("ytd-reel-video-renderer[is-active='']");
-      const video = reel?.querySelector("video");
+      let reel;
+      if (!isAndroid) reel = document.querySelector("ytd-reel-video-renderer[is-active='']");
+      else reel = document.querySelector(".carousel-item[aria-hidden='false']");
+      let video;
+      if (!isAndroid) video = reel?.querySelector("video");
+      else video = document.querySelector("video");
+
       if (settings.Youtube.autoScroll && video) {
-        // auto scroll to next video when video finished
-        if (currentVideoId != reel.getAttribute("id")) {
-          currentTime = video.currentTime;
-          currentVideoId = reel.getAttribute("id");
-        }
-        if (currentTime > video.currentTime) {
-          const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
-          const nextVideo = document.querySelector(selector);
-          if (nextVideo) {
-            currentTime = 0;
-            nextVideo.scrollIntoView();
-            console.log("Clicked next video");
-            increaseBadge();
+        if (!isAndroid) {
+          // auto scroll to next video when video finished
+          if (currentVideoId != reel.getAttribute("id")) {
+            currentTime = video.currentTime;
+            currentVideoId = reel.getAttribute("id");
+          }
+          if (currentTime > video.currentTime) {
+            const selector = "ytd-reel-video-renderer[id='" + (Number(reel.getAttribute("id")) + 1) + "']";
+            const nextVideo = document.querySelector(selector);
+            if (nextVideo) {
+              currentTime = 0;
+              nextVideo.scrollIntoView();
+              console.log("Clicked next video");
+              increaseBadge();
+            }
+          } else {
+            currentTime = video.currentTime;
           }
         } else {
-          currentTime = video.currentTime;
+          // if (currentVideoId != video.src) {
+          //   currentTime = video.currentTime;
+          //   currentVideoId = video.src;
+          // }
+          // if (currentTime > video.currentTime) {
+          //   currentTime = 0;
+          //   window.dispatchEvent(
+          //     new KeyboardEvent("keydown", {
+          //       key: "arrowdown",
+          //       keyCode: 39,
+          //       code: "ArrowDown",
+          //       which: 39,
+          //       shiftKey: false,
+          //       ctrlKey: false,
+          //       metaKey: false,
+          //     })
+          //   );
+          //   console.log("Clicked next video", 39);
+          // } else currentTime = video.currentTime;
         }
       }
+
       if (settings.Youtube.speedSlider && reel) {
         if (video) {
-          let alreadySlider = reel.querySelector("ytd-shorts-player-controls").querySelector("#videoSpeedSlider");
+          let alreadySlider;
+          if (!isAndroid) alreadySlider = reel.querySelector("ytd-shorts-player-controls").querySelector("#videoSpeedSlider");
+          else alreadySlider = document.querySelector("#videoSpeedSlider");
           if (!alreadySlider) {
-            let position = reel.querySelector("ytd-shorts-player-controls");
+            let position;
+            if (!isAndroid) position = reel.querySelector("ytd-shorts-player-controls");
+            else position = video.parentElement;
             if (position) {
               videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
 
@@ -164,17 +201,28 @@ if (isYoutube || isTikTok) {
               slider.max = settings.General.sliderMax;
               slider.value = videoSpeed * 10;
               slider.step = settings.General.sliderSteps;
-              slider.style = "pointer-events: auto;background: rgb(221, 221, 221);display: none;width:150px;";
+              let style = "pointer-events: auto;background: rgb(221, 221, 221);display: none;width:150px;";
+              if (isAndroid) style += "z-index:999;position: absolute;right: 50px;top: 10px;";
+              slider.style = style;
 
               let speed = document.createElement("p");
               speed.id = "videoSpeed";
               speed.textContent = videoSpeed ? videoSpeed + "x" : "1x";
               // makes the button clickable
               // speed.setAttribute("class", "control-icon-btn");
-              speed.style = "font-size:2em;color:#f9f9f9;pointer-events: auto;padding: 0 5px;";
-
-              position.insertBefore(speed, position.children[position.children.length - 1]);
-              position.insertBefore(slider, position.children[position.children.length - 1]);
+              style = "font-size:2em;color:#f9f9f9;pointer-events: auto;padding: 0 5px;";
+              if (isAndroid) style += "z-index:999;position: absolute;right: 0px;top: 0px;";
+              speed.style = style;
+              if (!isAndroid) {
+                position.insertBefore(speed, position.children[position.children.length - 1]);
+                position.insertBefore(slider, position.children[position.children.length - 1]);
+              } else {
+                // let div = document.createElement("div");
+                // div.style = "pointer-events: auto; position: absolute;right: 16px;top: 40px;display: flex;flex-direction: column;align-items: center;";
+                document.querySelector("body").appendChild(speed);
+                document.querySelector("body").appendChild(slider);
+                // position.appendChild(div, position);
+              }
 
               if (videoSpeed) video.playbackRate = videoSpeed;
               speed.onclick = function () {
@@ -188,8 +236,11 @@ if (isYoutube || isTikTok) {
               };
             }
           } else {
+            videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
             // need to resync the slider with the video sometimes
-            let speed = reel.querySelector("ytd-shorts-player-controls").querySelector("#videoSpeed");
+            let speed;
+            if (!isAndroid) speed = reel.querySelector("#videoSpeed");
+            else speed = document.querySelector("#videoSpeed");
             if (video.playbackRate != videoSpeed) {
               video.playbackRate = videoSpeed;
             }
@@ -242,7 +293,7 @@ if (isYoutube || isTikTok) {
 
       // convert this to javascript
       // autoplay switch on page
-      if (video) {
+      if (video && !isAndroid) {
         let alreadySlider = reel.querySelector("ytd-reel-player-overlay-renderer").querySelector("#YoutubeAutoScroll");
         if (!alreadySlider) {
           // reel = document.querySelector("ytd-reel-video-renderer[is-active='']")
@@ -363,9 +414,13 @@ if (isYoutube || isTikTok) {
       }
       if (settings.Youtube.volumeSlider && reel) {
         if (video) {
-          let alreadySlider = reel.querySelector("ytd-shorts-player-controls")?.querySelector("#videoVolumeSlider");
+          let alreadySlider;
+          if (!isAndroid) alreadySlider = reel.querySelector("ytd-shorts-player-controls").querySelector("#videoVolumeSlider");
+          else alreadySlider = document.querySelector("#videoVolumeSlider");
           if (!alreadySlider) {
-            let position = reel.querySelector("ytd-shorts-player-controls");
+            let position;
+            if (!isAndroid) position = reel.querySelector("ytd-shorts-player-controls");
+            else position = video.parentElement;
             if (position) {
               videoVolume = videoVolume ? videoVolume : video.volume;
 
@@ -377,8 +432,11 @@ if (isYoutube || isTikTok) {
               slider.max = 1;
               slider.value = videoVolume;
               slider.step = 0.01;
-              slider.style = "height: 100px;opacity:0.6;pointer-events: auto;background: rgb(221, 221, 221); position: absolute;right: 16px;top: 40px;";
-              position.appendChild(slider, position.children[position.children.length - 1]);
+              let style = "height: 100px;opacity:0.6;pointer-events: auto;background: rgb(221, 221, 221); position: absolute;right: 16px;top: 40px;";
+              if (isAndroid) style += "z-index:999;position: absolute;right: 0px;top: 40px;";
+              slider.style = style;
+              if (!isAndroid) position.appendChild(slider, position.children[position.children.length - 1]);
+              else document.querySelector("body").appendChild(slider);
 
               if (videoVolume) video.volume = videoVolume;
 
@@ -406,8 +464,10 @@ if (isYoutube || isTikTok) {
     // on left right arrow 5 sec skip
     document.onkeydown = checkKey;
     function checkKey(e) {
-      const video = document.querySelector("ytd-reel-video-renderer[is-active='']")?.querySelector("video");
+      let video = document.querySelector("ytd-reel-video-renderer[is-active='']")?.querySelector("video");
+      if (isAndroid) video = document.querySelector("video");
       if (!video) return;
+      // https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
       if (e.keyCode == "37") {
         currentTime = video.currentTime - 5 >= 0 ? video.currentTime - 5 : 0;
         video.currentTime -= 5;
