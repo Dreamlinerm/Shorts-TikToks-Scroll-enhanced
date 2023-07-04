@@ -208,17 +208,18 @@ if (isShort || isTikTok) {
       // convert K and M to numbers
       // convert the number 8.1K to 8100
       function convertToNumber(str) {
-        const num = parseFloat(str);
-
+        if (str.toUpperCase().includes("K")) {
+          const num = parseFloat();
+          return num * 1000; // multiply by 1000 to convert from K to the actual number
+        } else if (str.toUpperCase().includes("M")) {
+          const num = parseFloat();
+          return num * 1000000; // multiply by 1000000 to convert from M to the actual number
+        } else {
+          // on german youtube they write 509.000 instead of k
+          const num = Number(str.replace("."));
+        }
         if (isNaN(num)) {
           return null; // return NaN if the input cannot be parsed as a number
-        }
-
-        if (str.toUpperCase().includes("K")) {
-          return num * 1000; // multiply by 1000 to convert from K to the actual number
-        }
-        if (str.toUpperCase().includes("M")) {
-          return num * 1000000; // multiply by 1000000 to convert from M to the actual number
         }
         return num; // return the number as is if no conversion is needed
       }
@@ -395,18 +396,20 @@ if (isShort || isTikTok) {
       }
     }
   }
-  // on left right arrow 5 sec skip
-  document.onkeydown = checkKey;
-  function checkKey(e) {
-    const video = document.querySelector("ytd-reel-video-renderer[is-active='']")?.querySelector("video");
-    if (!video) return;
-    if (e.keyCode == "37") {
-      currentTime = video.currentTime - 5 >= 0 ? video.currentTime - 5 : 0;
-      video.currentTime -= 5;
-      console.log("left arrow");
-    } else if (e.keyCode == "39") {
-      video.currentTime += 5;
-      console.log("right arrow");
+  if (isShort) {
+    // on left right arrow 5 sec skip
+    document.onkeydown = checkKey;
+    function checkKey(e) {
+      const video = document.querySelector("ytd-reel-video-renderer[is-active='']")?.querySelector("video");
+      if (!video) return;
+      if (e.keyCode == "37") {
+        currentTime = video.currentTime - 5 >= 0 ? video.currentTime - 5 : 0;
+        video.currentTime -= 5;
+        console.log("left arrow");
+      } else if (e.keyCode == "39") {
+        video.currentTime += 5;
+        console.log("right arrow");
+      }
     }
   }
 
