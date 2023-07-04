@@ -6,31 +6,31 @@
 
 ## Auto play next short change speed, volume and more
 
-<!-- <a href="https://addons.mozilla.org/firefox/addon/netflix-prime-auto-skip/">
+<a href="https://addons.mozilla.org/de/firefox/addon/shorts-tiktoks-scroll-enhanced/">
 <img src="Logos/firefox.svg" width="20px">
 </a>
-<img src="https://img.shields.io/amo/dw/NetflixPrime@Autoskip.io" >
-<img src="https://img.shields.io/amo/users/NetflixPrime@Autoskip.io" >
-<img src="https://img.shields.io/badge/installs-1253-informational" >
-<img src="https://img.shields.io/amo/stars/NetflixPrime@Autoskip.io?color=e60010" >
+<img src="https://img.shields.io/amo/dw/Shorts@Enhance.io">
+<img src="https://img.shields.io/amo/users/Shorts@Enhance.io">
+<!-- <img src="https://img.shields.io/badge/installs-1253-informational" > -->
+<img src="https://img.shields.io/amo/stars/Shorts@Enhance.io?color=e60010" >
 <br>
-<a href="https://chrome.google.com/webstore/detail/streaming-enhanced-netfli/akaimhgappllmlkadblbdknhbfghdgle">
+<a href="https://chrome.google.com/webstore/detail/shorts-tiktoks-scroll-enh/kpnhbkbpgpkfoajcoacldcdhgiigehpo">
 <img src="Logos/chrome.svg" width="20px">
 </a>
-<img src="https://img.shields.io/chrome-web-store/users/akaimhgappllmlkadblbdknhbfghdgle" >
-<img src="https://img.shields.io/badge/installs-620-informational" >
-<img src="https://img.shields.io/chrome-web-store/stars/akaimhgappllmlkadblbdknhbfghdgle?color=e60010" > -->
+<img src="https://img.shields.io/chrome-web-store/users/kpnhbkbpgpkfoajcoacldcdhgiigehpo" >
+<!-- <img src="https://img.shields.io/badge/installs-620-informational" > -->
+<img src="https://img.shields.io/chrome-web-store/stars/kpnhbkbpgpkfoajcoacldcdhgiigehpo?color=e60010">
 </div>
 
 ## Install in Browser
 
-<a href="https://addons.mozilla.org/firefox/addon/netflix-prime-auto-skip/">
+<a href="https://addons.mozilla.org/de/firefox/addon/shorts-tiktoks-scroll-enhanced/">
 <img src="Logos/firefox.svg" width="8%" alt="firefox">
 </a>
-<a href="https://chrome.google.com/webstore/detail/streaming-enhanced-netfli/akaimhgappllmlkadblbdknhbfghdgle">
+<a href="https://chrome.google.com/webstore/detail/shorts-tiktoks-scroll-enh/kpnhbkbpgpkfoajcoacldcdhgiigehpo">
 <img src="Logos/chrome.svg" width="8%" alt="chrome">
 </a>
-<a href="https://chrome.google.com/webstore/detail/streaming-enhanced-netfli/akaimhgappllmlkadblbdknhbfghdgle">
+<a href="https://chrome.google.com/webstore/detail/shorts-tiktoks-scroll-enh/kpnhbkbpgpkfoajcoacldcdhgiigehpo">
 <img src="Logos/microsoft-edge-1.svg" width="8%" alt="chrome">
 </a>
 
