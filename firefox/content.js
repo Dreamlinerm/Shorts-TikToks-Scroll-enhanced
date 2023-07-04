@@ -160,25 +160,25 @@ if (isYoutube || isTikTok) {
             currentTime = video.currentTime;
           }
         } else {
-          // if (currentVideoId != video.src) {
-          //   currentTime = video.currentTime;
-          //   currentVideoId = video.src;
-          // }
-          // if (currentTime > video.currentTime) {
-          //   currentTime = 0;
-          //   window.dispatchEvent(
-          //     new KeyboardEvent("keydown", {
-          //       key: "arrowdown",
-          //       keyCode: 39,
-          //       code: "ArrowDown",
-          //       which: 39,
-          //       shiftKey: false,
-          //       ctrlKey: false,
-          //       metaKey: false,
-          //     })
-          //   );
-          //   console.log("Clicked next video", 39);
-          // } else currentTime = video.currentTime;
+          if (currentVideoId != video.src) {
+            currentTime = video.currentTime;
+            currentVideoId = video.src;
+          }
+          if (currentTime > video.currentTime) {
+            currentTime = 0;
+            document.dispatchEvent(
+              new KeyboardEvent("keydown", {
+                key: "arrowdown",
+                keyCode: 39,
+                code: "ArrowDown",
+                which: 39,
+                shiftKey: false,
+                ctrlKey: false,
+                metaKey: false,
+              })
+            );
+            console.log("Clicked next video", 39);
+          } else currentTime = video.currentTime;
         }
       }
 
