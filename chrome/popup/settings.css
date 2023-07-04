@@ -189,7 +189,7 @@ label {
   bottom: 4px;
   background-color: white;
   /* -webkit-transition: 0.4s;
-   transition: 0.4s; */
+    transition: 0.4s; */
 }
 
 input:checked + .slider {
@@ -200,8 +200,8 @@ input:checked + .slider:hover {
   background-color: #006303;
 }
 /* input:focus + .slider {
-   box-shadow: 0 0 1px #00a205;
- } */
+    box-shadow: 0 0 1px #00a205;
+  } */
 
 input:checked + .slider:before {
   -webkit-transform: translateX(26px);
@@ -219,9 +219,9 @@ input:checked + .slider:before {
 }
 /* Firefox */
 /* html {
-   scrollbar-color: #212121 grey;
-   scrollbar-width: thin;
- } */
+    scrollbar-color: #212121 grey;
+    scrollbar-width: thin;
+  } */
 /* WebKit and Chromiums */
 ::-webkit-scrollbar {
   width: 8px;
@@ -239,10 +239,10 @@ input:checked + .slider:before {
   height: 100vh;
   background-color: #111;
   /* margin-right: 5px;
-   position: fixed; 
-   z-index: 1; 
-   top: 0; 
-   left: 0; */
+    position: fixed; 
+    z-index: 1; 
+    top: 0; 
+    left: 0; */
   /* border-radius: 15px; */
   /* margin: 15px; */
   padding: 0 10px;
@@ -364,5 +364,5 @@ hr {
 }
 
 /* .icon path {
-   fill: white;
- } */
+    fill: white;
+  } */
