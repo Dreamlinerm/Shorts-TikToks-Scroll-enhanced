@@ -21,7 +21,7 @@ const isTikTok = /tiktok/i.test(url);
 
 let isEdge = /edg/i.test(ua);
 let isFirefox = /firefox/i.test(ua);
-const version = "1.0.0";
+const version = "1.0.1";
 if (isYoutube || isTikTok) {
   // global variables in localStorage
   const defaultSettings = {

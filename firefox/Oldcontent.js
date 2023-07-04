@@ -12,7 +12,7 @@
  */
 let url = window.location.href;
 const isShort = /shorts/i.test(url);
-const version = "1.0.0";
+const version = "1.0.1";
 // global variables in localStorage
 const defaultSettings = {
   settings: {
