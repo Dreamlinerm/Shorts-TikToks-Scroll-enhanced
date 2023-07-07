@@ -41,6 +41,7 @@ if (isYoutube || isTikTok || isIG) {
   let settings = defaultSettings.settings;
   let videoSpeed = 1;
   let videoVolume;
+  let video;
   async function setVideoSpeed(speed) {
     videoSpeed = speed;
   }
@@ -484,7 +485,6 @@ if (isYoutube || isTikTok || isIG) {
     const isReel = /reels/i.test(url);
     if (isReel) {
       const VideoList = document.querySelectorAll("video");
-      let video;
       let nextVideo;
       for (let i = 0; i < VideoList.length; i++) {
         if (!VideoList[i].paused) {
@@ -593,6 +593,27 @@ if (isYoutube || isTikTok || isIG) {
               alreadySlider.value = videoVolume;
             }
           }
+        }
+      }
+    }
+  }
+
+  if (isIG) {
+    // on left right arrow 5 sec skip
+    document.onkeydown = checkKey;
+    function checkKey(e) {
+      url = window.location.href;
+      const isReel = /reels/i.test(url);
+      if (isReel) {
+        if (!video) return;
+        // https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
+        if (e.keyCode == "37") {
+          currentTime = video.currentTime - 5 >= 0 ? video.currentTime - 5 : 0;
+          video.currentTime -= 5;
+          console.log("left arrow");
+        } else if (e.keyCode == "39") {
+          video.currentTime += 5;
+          console.log("right arrow");
         }
       }
     }
