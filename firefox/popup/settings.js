@@ -66,6 +66,7 @@ const defaultSettings = {
   settings: {
     TikTok: { autoScroll: true, speedSlider: true },
     Youtube: { autoScroll: true, speedSlider: true, lowViews: true, volumeSlider: true },
+    InstaGram: { autoScroll: true, speedSlider: true, volumeSlider: true },
     Statistics: {},
     General: { lowViewsUpvotes: 200, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
     Statistics: { SegmentsSkipped: 0 },

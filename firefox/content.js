@@ -18,20 +18,21 @@ let ua = window.navigator.userAgent;
 // only on prime video pages
 const isYoutube = /youtube/i.test(url);
 const isTikTok = /tiktok/i.test(url);
+const isIG = /instagram/i.test(url);
 
 let isEdge = /edg/i.test(ua);
 let isChrome = /chrome/i.test(ua);
 let isFirefox = /firefox/i.test(ua);
-
 const isAndroid = /android/i.test(ua);
 
 const version = "1.0.3";
-if (isYoutube || isTikTok) {
+if (isYoutube || isTikTok || isIG) {
   // global variables in localStorage
   const defaultSettings = {
     settings: {
       TikTok: { autoScroll: true, speedSlider: true },
       Youtube: { autoScroll: true, speedSlider: true, lowViews: true, volumeSlider: true },
+      InstaGram: { autoScroll: true, speedSlider: true, volumeSlider: true },
       Statistics: {},
       General: { lowViewsUpvotes: 200, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
       Statistics: { SegmentsSkipped: 0 },
@@ -56,16 +57,15 @@ if (isYoutube || isTikTok) {
 
     if (isYoutube) console.log("Page %cYoutube shorts", "color: #e60010;");
     else if (isTikTok) console.log("Page %cTikTok", "color: #e60010;");
+    else if (isIG) console.log("Page %cInstaGram", "color: #e60010;");
     if (typeof settings !== "object") {
       browser.storage.sync.set(defaultSettings);
     } else {
-      if (isTikTok) {
-        // start Observers depending on the settings
-        TikTokObserver.observe(document, config);
-      } else if (isYoutube) {
-        // start Observers depending on the settings
-        YoutubeObserver.observe(document, config);
-      }
+      // start Observers depending on the settings
+      if (isTikTok) TikTokObserver.observe(document, config);
+      else if (isYoutube) YoutubeObserver.observe(document, config);
+      else if (isIG) InstaGramObserver.observe(document, config);
+
       let changedSettings = false;
       for (const key in defaultSettings.settings) {
         if (typeof settings[key] === "undefined") {
@@ -473,6 +473,37 @@ if (isYoutube || isTikTok) {
       } else if (e.keyCode == "39") {
         video.currentTime += 5;
         console.log("right arrow");
+      }
+    }
+  }
+
+  // InstaGram Observer
+  const InstaGramObserver = new MutationObserver(InstaGram);
+  function InstaGram(mutations, observer) {
+    if (settings.InstaGram.autoScroll) {
+      url = window.location.href;
+      const isReel = /reels/i.test(url);
+      const VideoList = document.querySelectorAll("video");
+      let video;
+      let nextVideo;
+      for (let i = 0; i < VideoList.length; i++) {
+        if (!VideoList[i].paused) {
+          video = VideoList[i];
+          nextVideo = VideoList[i + 1];
+          break;
+        }
+      }
+      if (isReel && video) {
+        if (currentVideoId != video.src) {
+          currentTime = video.currentTime;
+          currentVideoId = video.src;
+        }
+        if (currentTime > video.currentTime) {
+          currentTime = 0;
+          nextVideo.scrollIntoView();
+          console.log("Clicked next video");
+          increaseBadge();
+        } else currentTime = video.currentTime;
       }
     }
   }
