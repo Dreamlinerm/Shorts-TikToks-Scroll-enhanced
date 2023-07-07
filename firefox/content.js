@@ -493,64 +493,105 @@ if (isYoutube || isTikTok || isIG) {
           break;
         }
       }
-      if (settings.InstaGram.autoScroll && video) {
-        if (currentVideoId != video.src) {
-          currentTime = video.currentTime;
-          currentVideoId = video.src;
+      if (video) {
+        if (settings.InstaGram.autoScroll) {
+          if (currentVideoId != video.src) {
+            currentTime = video.currentTime;
+            currentVideoId = video.src;
+          }
+          if (currentTime > video.currentTime) {
+            currentTime = 0;
+            nextVideo.scrollIntoView();
+            console.log("Clicked next video");
+            increaseBadge();
+          } else currentTime = video.currentTime;
         }
-        if (currentTime > video.currentTime) {
-          currentTime = 0;
-          nextVideo.scrollIntoView();
-          console.log("Clicked next video");
-          increaseBadge();
-        } else currentTime = video.currentTime;
-      }
 
-      if (settings.InstaGram.speedSlider && video) {
-        let alreadySlider = video.parentElement.querySelector("#videoSpeedSlider");
-        if (!alreadySlider) {
-          let position = video.parentElement;
-          if (position) {
+        if (settings.InstaGram.speedSlider) {
+          let alreadySlider = video.parentElement.querySelector("#videoSpeedSlider");
+          if (!alreadySlider) {
+            let position = video.parentElement;
+            if (position) {
+              videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
+
+              let slider = document.createElement("input");
+              slider.id = "videoSpeedSlider";
+              slider.type = "range";
+              slider.min = settings.General.sliderMin;
+              slider.max = settings.General.sliderMax;
+              slider.value = videoSpeed * 10;
+              slider.step = settings.General.sliderSteps;
+              slider.style = "z-index:999;position: absolute;right: 120px;top: 15px;pointer-events: auto;background: rgb(221, 221, 221);display: none;width:150px;";
+
+              let speed = document.createElement("p");
+              speed.id = "videoSpeed";
+              speed.textContent = videoSpeed ? videoSpeed + "x" : "1x";
+              speed.style = "z-index:999;position: absolute;right: 50px;top: -10px;font-size:2em;color:#f9f9f9;pointer-events: auto;padding: 0 5px;";
+
+              position.appendChild(speed, position);
+              position.appendChild(slider, position);
+
+              if (videoSpeed) video.playbackRate = videoSpeed;
+              speed.onclick = function () {
+                if (slider.style.display === "block") slider.style.display = "none";
+                else slider.style.display = "block";
+              };
+              slider.oninput = function () {
+                speed.textContent = this.value / 10 + "x";
+                video.playbackRate = this.value / 10;
+                setVideoSpeed(this.value / 10);
+              };
+            }
+          } else {
             videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
-
-            let slider = document.createElement("input");
-            slider.id = "videoSpeedSlider";
-            slider.type = "range";
-            slider.min = settings.General.sliderMin;
-            slider.max = settings.General.sliderMax;
-            slider.value = videoSpeed * 10;
-            slider.step = settings.General.sliderSteps;
-            slider.style = "z-index:999;position: absolute;right: 120px;top: 15px;pointer-events: auto;background: rgb(221, 221, 221);display: none;width:150px;";
-
-            let speed = document.createElement("p");
-            speed.id = "videoSpeed";
-            speed.textContent = videoSpeed ? videoSpeed + "x" : "1x";
-            speed.style = "z-index:999;position: absolute;right: 50px;top: -10px;font-size:2em;color:#f9f9f9;pointer-events: auto;padding: 0 5px;";
-
-            position.appendChild(speed, position);
-            position.appendChild(slider, position);
-
-            if (videoSpeed) video.playbackRate = videoSpeed;
-            speed.onclick = function () {
-              if (slider.style.display === "block") slider.style.display = "none";
-              else slider.style.display = "block";
-            };
-            slider.oninput = function () {
-              speed.textContent = this.value / 10 + "x";
-              video.playbackRate = this.value / 10;
-              setVideoSpeed(this.value / 10);
-            };
+            // need to resync the slider with the video sometimes
+            let speed = video.parentElement.querySelector("#videoSpeed");
+            if (video.playbackRate != videoSpeed) {
+              video.playbackRate = videoSpeed;
+            }
+            if (alreadySlider.value != videoSpeed * 10) {
+              alreadySlider.value = videoSpeed * 10;
+              speed.textContent = videoSpeed + "x";
+            }
           }
-        } else {
-          videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
-          // need to resync the slider with the video sometimes
-          let speed = video.parentElement.querySelector("#videoSpeed");
-          if (video.playbackRate != videoSpeed) {
-            video.playbackRate = videoSpeed;
-          }
-          if (alreadySlider.value != videoSpeed * 10) {
-            alreadySlider.value = videoSpeed * 10;
-            speed.textContent = videoSpeed + "x";
+        }
+
+        if (settings.InstaGram.volumeSlider) {
+          let alreadySlider = video.parentElement.querySelector("#videoVolumeSlider");
+          if (!alreadySlider) {
+            let position = video.parentElement;
+            if (position) {
+              videoVolume = videoVolume ? videoVolume : video.volume;
+
+              let slider = document.createElement("input");
+              slider.id = "videoVolumeSlider";
+              slider.setAttribute("orient", "vertical");
+              slider.type = "range";
+              slider.min = 0;
+              slider.max = 1;
+              slider.value = videoVolume;
+              slider.step = 0.01;
+              let style = "z-index:999;position: absolute;right: 20px;top: 45px;height: 100px;opacity:0.6;pointer-events: auto;background: rgb(221, 221, 221);";
+              if (isChrome) style += "-webkit-appearance: slider-vertical;width: 20px;";
+              slider.style = style;
+              position.appendChild(slider, position);
+
+              if (videoVolume) video.volume = videoVolume;
+
+              slider.oninput = function () {
+                video.volume = this.value;
+                setVideoVolume(this.value);
+              };
+            }
+          } else {
+            videoVolume = videoVolume ? videoVolume : video.volume;
+            // need to resync the slider with the video sometimes
+            if (video.volume != videoVolume) {
+              video.volume = videoVolume;
+            }
+            if (alreadySlider.value != videoVolume) {
+              alreadySlider.value = videoVolume;
+            }
           }
         }
       }
