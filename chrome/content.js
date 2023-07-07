@@ -25,7 +25,7 @@ let isChrome = /chrome/i.test(ua);
 let isFirefox = /firefox/i.test(ua);
 const isAndroid = /android/i.test(ua);
 
-const version = "1.0.5";
+const version = "1.0.6";
 if (isYoutube || isTikTok || isIG) {
   // global variables in localStorage
   const defaultSettings = {
@@ -242,8 +242,8 @@ if (isYoutube || isTikTok || isIG) {
       // }
       if (settings.Youtube.lowViews && reel) {
         let upvoteText;
-        if (!isAndroid) upvoteText = reel.querySelector("ytd-like-button-renderer")?.querySelector("span").textContent;
-        else upvoteText = document.querySelector("ytm-like-button-renderer")?.querySelector("span").textContent;
+        if (!isAndroid) upvoteText = reel.querySelector("ytd-like-button-renderer")?.querySelector("span")?.textContent;
+        else upvoteText = document.querySelector("ytm-like-button-renderer")?.querySelector("span")?.textContent;
         // convert K and M to numbers
         // convert the number 8.1K to 8100
         function convertToNumber(str) {
