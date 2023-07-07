@@ -507,7 +507,7 @@ if (isYoutube || isTikTok || isIG) {
       }
 
       if (settings.InstaGram.speedSlider && video) {
-        let alreadySlider = document.querySelector("#videoSpeedSlider");
+        let alreadySlider = video.parentElement.querySelector("#videoSpeedSlider");
         if (!alreadySlider) {
           let position = video.parentElement;
           if (position) {
@@ -544,7 +544,7 @@ if (isYoutube || isTikTok || isIG) {
         } else {
           videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
           // need to resync the slider with the video sometimes
-          let speed = document.querySelector("#videoSpeed");
+          let speed = video.parentElement.querySelector("#videoSpeed");
           if (video.playbackRate != videoSpeed) {
             video.playbackRate = videoSpeed;
           }
