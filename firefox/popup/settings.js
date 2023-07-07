@@ -149,6 +149,16 @@ function setCheckboxesToSettings() {
   button = document.querySelector("#YoutubeVolumeSlider");
   if (button) button.checked = settings?.Youtube.volumeSlider;
 
+  //  -------------      InstaGram        ---------------------------------------
+  button = document.querySelector("#InstaGramSkips");
+  if (button) button.checked = settings?.InstaGram.autoScroll && settings?.InstaGram.speedSlider && settings?.InstaGram.volumeSlider;
+  button = document.querySelector("#InstaGramAutoScroll");
+  if (button) button.checked = settings?.InstaGram.autoScroll;
+  button = document.querySelector("#InstaGramSpeedSlider");
+  if (button) button.checked = settings?.InstaGram.speedSlider;
+  button = document.querySelector("#InstaGramVolumeSlider");
+  if (button) button.checked = settings?.InstaGram.volumeSlider;
+
   // general video settings
 
   //  -------------      Slider Options        ---------------------------------------
@@ -185,7 +195,7 @@ function openIndividualSettings(setting) {
   document.getElementsByClassName(setting + "UpArrow")[0].style.display = open ? "block" : "none";
 }
 function Menu(setting) {
-  const Pages = ["TikTok", "Youtube", "Other", "Default"];
+  const Pages = ["TikTok", "Youtube", "InstaGram", "Other", "Default"];
   const noButton = ["Default"];
   for (const page of Pages) {
     document.getElementById(page + "Settings").style.display = "none";
@@ -215,6 +225,8 @@ function listenForClicks() {
       Menu("TikTok");
     } else if (e.target.id === "MenuYoutube") {
       Menu("Youtube");
+    } else if (e.target.id === "MenuInstaGram") {
+      Menu("InstaGram");
     } else if (e.target.id === "MenuOther") {
       Menu("Other");
     }
@@ -223,6 +235,8 @@ function listenForClicks() {
       openIndividualSettings("TikTok");
     } else if (e.target.id === "openYoutubeSettings") {
       openIndividualSettings("Youtube");
+    } else if (e.target.id === "openInstaGramSettings") {
+      openIndividualSettings("InstaGram");
     }
     // -------------      Default        ---------------------------------------
     //  -------------      TikTok        ---------------------------------------
@@ -259,6 +273,24 @@ function listenForClicks() {
     } else if (e.target.id === "YoutubeVolumeSlider") {
       settings.Youtube.volumeSlider = !settings.Youtube.volumeSlider;
       setSettings("YoutubeVolumeSlider");
+    }
+
+    //  -------------      InstaGram        ---------------------------------------
+    else if (e.target.id === "InstaGramSkips") {
+      const InstaGramSkips = !(settings?.InstaGram.autoScroll && settings?.InstaGram.speedSlider && settings?.InstaGram.volumeSlider);
+      settings.InstaGram.autoScroll = InstaGramSkips;
+      settings.InstaGram.speedSlider = InstaGramSkips;
+      settings.InstaGram.volumeSlider = InstaGramSkips;
+      setSettings("All InstaGramSkips");
+    } else if (e.target.id === "InstaGramAutoScroll") {
+      settings.InstaGram.autoScroll = !settings.InstaGram.autoScroll;
+      setSettings("InstaGramAutoScroll");
+    } else if (e.target.id === "InstaGramSpeedSlider") {
+      settings.InstaGram.speedSlider = !settings.InstaGram.speedSlider;
+      setSettings("InstaGramSpeedSlider");
+    } else if (e.target.id === "InstaGramVolumeSlider") {
+      settings.InstaGram.volumeSlider = !settings.InstaGram.volumeSlider;
+      setSettings("InstaGramVolumeSlider");
     }
 
     //  -------------      Video        ---------------------------------------

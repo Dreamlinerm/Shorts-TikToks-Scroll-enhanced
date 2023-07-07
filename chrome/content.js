@@ -18,20 +18,21 @@ let ua = window.navigator.userAgent;
 // only on prime video pages
 const isYoutube = /youtube/i.test(url);
 const isTikTok = /tiktok/i.test(url);
+const isIG = /instagram/i.test(url);
 
 let isEdge = /edg/i.test(ua);
 let isChrome = /chrome/i.test(ua);
 let isFirefox = /firefox/i.test(ua);
-
 const isAndroid = /android/i.test(ua);
 
 const version = "1.0.3";
-if (isYoutube || isTikTok) {
+if (isYoutube || isTikTok || isIG) {
   // global variables in localStorage
   const defaultSettings = {
     settings: {
       TikTok: { autoScroll: true, speedSlider: true },
       Youtube: { autoScroll: true, speedSlider: true, lowViews: true, volumeSlider: true },
+      InstaGram: { autoScroll: true, speedSlider: true, volumeSlider: true },
       Statistics: {},
       General: { lowViewsUpvotes: 200, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
       Statistics: { SegmentsSkipped: 0 },
@@ -40,6 +41,7 @@ if (isYoutube || isTikTok) {
   let settings = defaultSettings.settings;
   let videoSpeed = 1;
   let videoVolume;
+  let video;
   async function setVideoSpeed(speed) {
     videoSpeed = speed;
   }
@@ -56,16 +58,15 @@ if (isYoutube || isTikTok) {
 
     if (isYoutube) console.log("Page %cYoutube shorts", "color: #e60010;");
     else if (isTikTok) console.log("Page %cTikTok", "color: #e60010;");
+    else if (isIG) console.log("Page %cInstaGram", "color: #e60010;");
     if (typeof settings !== "object") {
       chrome.storage.sync.set(defaultSettings);
     } else {
-      if (isTikTok) {
-        // start Observers depending on the settings
-        TikTokObserver.observe(document, config);
-      } else if (isYoutube) {
-        // start Observers depending on the settings
-        YoutubeObserver.observe(document, config);
-      }
+      // start Observers depending on the settings
+      if (isTikTok) TikTokObserver.observe(document, config);
+      else if (isYoutube) YoutubeObserver.observe(document, config);
+      else if (isIG) InstaGramObserver.observe(document, config);
+
       let changedSettings = false;
       for (const key in defaultSettings.settings) {
         if (typeof settings[key] === "undefined") {
@@ -473,6 +474,147 @@ if (isYoutube || isTikTok) {
       } else if (e.keyCode == "39") {
         video.currentTime += 5;
         console.log("right arrow");
+      }
+    }
+  }
+
+  // InstaGram Observer
+  const InstaGramObserver = new MutationObserver(InstaGram);
+  function InstaGram(mutations, observer) {
+    url = window.location.href;
+    const isReel = /reels/i.test(url);
+    if (isReel) {
+      const VideoList = document.querySelectorAll("video");
+      let nextVideo;
+      for (let i = 0; i < VideoList.length; i++) {
+        if (!VideoList[i].paused) {
+          video = VideoList[i];
+          nextVideo = VideoList[i + 1];
+          break;
+        }
+      }
+      if (video) {
+        if (settings.InstaGram.autoScroll) {
+          if (currentVideoId != video.src) {
+            currentTime = video.currentTime;
+            currentVideoId = video.src;
+          }
+          if (currentTime > video.currentTime) {
+            currentTime = 0;
+            nextVideo.scrollIntoView();
+            console.log("Clicked next video");
+            increaseBadge();
+          } else currentTime = video.currentTime;
+        }
+
+        if (settings.InstaGram.speedSlider) {
+          let alreadySlider = video.parentElement.querySelector("#videoSpeedSlider");
+          if (!alreadySlider) {
+            let position = video.parentElement;
+            if (position) {
+              videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
+
+              let slider = document.createElement("input");
+              slider.id = "videoSpeedSlider";
+              slider.type = "range";
+              slider.min = settings.General.sliderMin;
+              slider.max = settings.General.sliderMax;
+              slider.value = videoSpeed * 10;
+              slider.step = settings.General.sliderSteps;
+              slider.style = "z-index:999;position: absolute;right: 120px;top: 15px;pointer-events: auto;background: rgb(221, 221, 221);display: none;width:150px;";
+
+              let speed = document.createElement("p");
+              speed.id = "videoSpeed";
+              speed.textContent = videoSpeed ? videoSpeed + "x" : "1x";
+              speed.style = "z-index:999;position: absolute;right: 50px;top: -10px;font-size:2em;color:#f9f9f9;pointer-events: auto;padding: 0 5px;";
+
+              position.appendChild(speed, position);
+              position.appendChild(slider, position);
+
+              if (videoSpeed) video.playbackRate = videoSpeed;
+              speed.onclick = function () {
+                if (slider.style.display === "block") slider.style.display = "none";
+                else slider.style.display = "block";
+              };
+              slider.oninput = function () {
+                speed.textContent = this.value / 10 + "x";
+                video.playbackRate = this.value / 10;
+                setVideoSpeed(this.value / 10);
+              };
+            }
+          } else {
+            videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
+            // need to resync the slider with the video sometimes
+            let speed = video.parentElement.querySelector("#videoSpeed");
+            if (video.playbackRate != videoSpeed) {
+              video.playbackRate = videoSpeed;
+            }
+            if (alreadySlider.value != videoSpeed * 10) {
+              alreadySlider.value = videoSpeed * 10;
+              speed.textContent = videoSpeed + "x";
+            }
+          }
+        }
+
+        if (settings.InstaGram.volumeSlider) {
+          let alreadySlider = video.parentElement.querySelector("#videoVolumeSlider");
+          if (!alreadySlider) {
+            let position = video.parentElement;
+            if (position) {
+              videoVolume = videoVolume ? videoVolume : video.volume;
+
+              let slider = document.createElement("input");
+              slider.id = "videoVolumeSlider";
+              slider.setAttribute("orient", "vertical");
+              slider.type = "range";
+              slider.min = 0;
+              slider.max = 1;
+              slider.value = videoVolume;
+              slider.step = 0.01;
+              let style = "z-index:999;position: absolute;right: 20px;top: 45px;height: 100px;opacity:0.6;pointer-events: auto;background: rgb(221, 221, 221);";
+              if (isChrome) style += "-webkit-appearance: slider-vertical;width: 20px;";
+              slider.style = style;
+              position.appendChild(slider, position);
+
+              if (videoVolume) video.volume = videoVolume;
+
+              slider.oninput = function () {
+                video.volume = this.value;
+                setVideoVolume(this.value);
+              };
+            }
+          } else {
+            videoVolume = videoVolume ? videoVolume : video.volume;
+            // need to resync the slider with the video sometimes
+            if (video.volume != videoVolume) {
+              video.volume = videoVolume;
+            }
+            if (alreadySlider.value != videoVolume) {
+              alreadySlider.value = videoVolume;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (isIG) {
+    // on left right arrow 5 sec skip
+    document.onkeydown = checkKey;
+    function checkKey(e) {
+      url = window.location.href;
+      const isReel = /reels/i.test(url);
+      if (isReel) {
+        if (!video) return;
+        // https://stackoverflow.com/questions/5597060/detecting-arrow-key-presses-in-javascript
+        if (e.keyCode == "37") {
+          currentTime = video.currentTime - 5 >= 0 ? video.currentTime - 5 : 0;
+          video.currentTime -= 5;
+          console.log("left arrow");
+        } else if (e.keyCode == "39") {
+          video.currentTime += 5;
+          console.log("right arrow");
+        }
       }
     }
   }

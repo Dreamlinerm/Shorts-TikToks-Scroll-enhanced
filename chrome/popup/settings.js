@@ -66,6 +66,7 @@ const defaultSettings = {
   settings: {
     TikTok: { autoScroll: true, speedSlider: true },
     Youtube: { autoScroll: true, speedSlider: true, lowViews: true, volumeSlider: true },
+    InstaGram: { autoScroll: true, speedSlider: true, volumeSlider: true },
     Statistics: {},
     General: { lowViewsUpvotes: 200, sliderSteps: 1, sliderMin: 5, sliderMax: 20 },
     Statistics: { SegmentsSkipped: 0 },
@@ -147,6 +148,16 @@ function setCheckboxesToSettings() {
   if (button) button.checked = settings?.Youtube.lowViews;
   button = document.querySelector("#YoutubeVolumeSlider");
   if (button) button.checked = settings?.Youtube.volumeSlider;
+
+  //  -------------      InstaGram        ---------------------------------------
+  button = document.querySelector("#InstaGramSkips");
+  if (button) button.checked = settings?.InstaGram.autoScroll && settings?.InstaGram.speedSlider && settings?.InstaGram.volumeSlider;
+  button = document.querySelector("#InstaGramAutoScroll");
+  if (button) button.checked = settings?.InstaGram.autoScroll;
+  button = document.querySelector("#InstaGramSpeedSlider");
+  if (button) button.checked = settings?.InstaGram.speedSlider;
+  button = document.querySelector("#InstaGramVolumeSlider");
+  if (button) button.checked = settings?.InstaGram.volumeSlider;
 
   // general video settings
 
@@ -258,6 +269,24 @@ function listenForClicks() {
     } else if (e.target.id === "YoutubeVolumeSlider") {
       settings.Youtube.volumeSlider = !settings.Youtube.volumeSlider;
       setSettings("YoutubeVolumeSlider");
+    }
+
+    //  -------------      InstaGram        ---------------------------------------
+    else if (e.target.id === "InstaGramSkips") {
+      const InstaGramSkips = !(settings?.InstaGram.autoScroll && settings?.InstaGram.speedSlider && settings?.InstaGram.volumeSlider);
+      settings.InstaGram.autoScroll = InstaGramSkips;
+      settings.InstaGram.speedSlider = InstaGramSkips;
+      settings.InstaGram.volumeSlider = InstaGramSkips;
+      setSettings("All InstaGramSkips");
+    } else if (e.target.id === "InstaGramAutoScroll") {
+      settings.InstaGram.autoScroll = !settings.InstaGram.autoScroll;
+      setSettings("InstaGramAutoScroll");
+    } else if (e.target.id === "InstaGramSpeedSlider") {
+      settings.InstaGram.speedSlider = !settings.InstaGram.speedSlider;
+      setSettings("InstaGramSpeedSlider");
+    } else if (e.target.id === "InstaGramVolumeSlider") {
+      settings.InstaGram.volumeSlider = !settings.InstaGram.volumeSlider;
+      setSettings("InstaGramVolumeSlider");
     }
 
     //  -------------      Video        ---------------------------------------
