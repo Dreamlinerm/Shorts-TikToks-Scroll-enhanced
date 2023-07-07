@@ -29,7 +29,7 @@
           <img class="Logo" src="/icons/shorts.svg" />
           <div class="flex-center flex-col">
             <h2 class="title" i18n>pageTitle</h2>
-            <p style="color: grey; font-size: 1em">v.1.0.3</p>
+            <p style="color: grey; font-size: 1em">v.1.0.4</p>
           </div>
         </div>
         <a
@@ -136,6 +136,50 @@
             <p i18n>VolumeSwitch</p>
             <label class="switch">
               <input type="checkbox" id="YoutubeVolumeSlider" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="categoryInstaGram">
+        <div id="openInstaGramSettings" class="flex flex-between" style="padding: 5px 5px">
+          <h2 id="openInstaGramSettings" i18n>PageSpecificTitle;InstaGram</h2>
+          <div class="flex">
+            <div class="line flex-align" id="openInstaGramSettings">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20" height="1em" id="openInstaGramSettings" class="InstaGramDownArrow">
+                <path d="M0 0 40 0 20 20 0 0" fill="white" id="openInstaGramSettings" />
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20" height="1em" id="openInstaGramSettings" class="InstaGramUpArrow hidden">
+                <path d="M20 0 40 20 0 20 20 0" fill="white" id="openInstaGramSettings" />
+              </svg>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="InstaGramSkips" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- show on click -->
+        <div id="InstaGramSettings" style="display: none">
+          <div class="line flex">
+            <p i18n>AutoScrollSwitch</p>
+            <label class="switch">
+              <input type="checkbox" id="InstaGramAutoScroll" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="line flex">
+            <p i18n>SliderSwitch</p>
+            <label class="switch">
+              <input type="checkbox" id="InstaGramSpeedSlider" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="line flex">
+            <p i18n>VolumeSwitch</p>
+            <label class="switch">
+              <input type="checkbox" id="InstaGramVolumeSlider" />
               <span class="slider round"></span>
             </label>
           </div>

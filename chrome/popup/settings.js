@@ -195,7 +195,7 @@ function openIndividualSettings(setting) {
   document.getElementsByClassName(setting + "UpArrow")[0].style.display = open ? "block" : "none";
 }
 function Menu(setting) {
-  const Pages = ["TikTok", "Youtube", "Other", "Default"];
+  const Pages = ["TikTok", "Youtube", "InstaGram", "Other", "Default"];
   const noButton = ["Default"];
   for (const page of Pages) {
     document.getElementById(page + "Settings").style.display = "none";
@@ -225,6 +225,8 @@ function listenForClicks() {
       Menu("TikTok");
     } else if (e.target.id === "MenuYoutube") {
       Menu("Youtube");
+    } else if (e.target.id === "MenuInstaGram") {
+      Menu("InstaGram");
     } else if (e.target.id === "MenuOther") {
       Menu("Other");
     }
@@ -233,6 +235,8 @@ function listenForClicks() {
       openIndividualSettings("TikTok");
     } else if (e.target.id === "openYoutubeSettings") {
       openIndividualSettings("Youtube");
+    } else if (e.target.id === "openInstaGramSettings") {
+      openIndividualSettings("InstaGram");
     }
     // -------------      Default        ---------------------------------------
     //  -------------      TikTok        ---------------------------------------
