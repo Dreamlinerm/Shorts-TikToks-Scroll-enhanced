@@ -25,7 +25,7 @@ let isChrome = /chrome/i.test(ua);
 let isFirefox = /firefox/i.test(ua);
 const isAndroid = /android/i.test(ua);
 
-const version = "1.0.4";
+const version = "1.0.5";
 if (isYoutube || isTikTok || isIG) {
   // global variables in localStorage
   const defaultSettings = {
@@ -493,7 +493,7 @@ if (isYoutube || isTikTok || isIG) {
           break;
         }
       }
-      if (video) {
+      if (video && nextVideo) {
         if (settings.InstaGram.autoScroll) {
           if (currentVideoId != video.src) {
             currentTime = video.currentTime;
@@ -508,9 +508,13 @@ if (isYoutube || isTikTok || isIG) {
         }
 
         if (settings.InstaGram.speedSlider) {
-          let alreadySlider = video.parentElement.querySelector("#videoSpeedSlider");
+          let alreadySlider;
+          if (!isAndroid) alreadySlider = video.parentElement.querySelector("#videoSpeedSlider");
+          else alreadySlider = document.querySelector("#videoSpeedSlider");
           if (!alreadySlider) {
-            let position = video.parentElement;
+            let position;
+            if (!isAndroid) position = video.parentElement;
+            else position = document.querySelector("section");
             if (position) {
               videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
 
@@ -545,7 +549,9 @@ if (isYoutube || isTikTok || isIG) {
           } else {
             videoSpeed = videoSpeed ? videoSpeed : video.playbackRate;
             // need to resync the slider with the video sometimes
-            let speed = video.parentElement.querySelector("#videoSpeed");
+            let speed;
+            if (!isAndroid) speed = video.parentElement.querySelector("#videoSpeed");
+            else speed = document.querySelector("#videoSpeed");
             if (video.playbackRate != videoSpeed) {
               video.playbackRate = videoSpeed;
             }
@@ -557,9 +563,13 @@ if (isYoutube || isTikTok || isIG) {
         }
 
         if (settings.InstaGram.volumeSlider) {
-          let alreadySlider = video.parentElement.querySelector("#videoVolumeSlider");
+          let alreadySlider;
+          if (!isAndroid) alreadySlider = video.parentElement.querySelector("#videoVolumeSlider");
+          else alreadySlider = document.querySelector("#videoVolumeSlider");
           if (!alreadySlider) {
-            let position = video.parentElement;
+            let position;
+            if (!isAndroid) position = video.parentElement;
+            else position = document.querySelector("section");
             if (position) {
               videoVolume = videoVolume ? videoVolume : video.volume;
 
