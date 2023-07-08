@@ -68,7 +68,7 @@ The script, "skipper.js", is injected into all urls containing "amazon.\*/\*/vid
 It automatically skips Ads, intros, Credits, recaps, and anything else you don't want to watch on Netflix, Prime video and Disney Plus & Hotstar.
 
 
-## ✨ Features
+✨ Features
 
 On TickTok,Youtube and Instagram shorts it automatically:
 
@@ -79,7 +79,6 @@ On TickTok,Youtube and Instagram shorts it automatically:
 On Youtube it also:
 
 <ul>
-<li>Skips Recaps</li>
 <li>Add Speed Slider</li>
 <li>Adds Volume Slider</li>
 <li>Skip low likes</li>
@@ -88,23 +87,22 @@ On Youtube it also:
 
 On Instagram(IG,Insta) it also:
 <ul>
-<li>Skips Recaps</li>
 <li>Add Speed Slider</li>
 <li>Adds Volume Slider</li>
 <li>Playback control with right and left arrow keys</li>
 </ul>
 
-## Contributing
+Contributing
 
 Everyone is welcome to contribute!
 
 If you have any suggestions or Bugs, please open an issue.
 
-## 💕 Enjoying Streaming enhanced?
+💕 Enjoying Streaming enhanced?
 
 Buy me a coffee! [PayPal](https://paypal.me/MarvinKrebber)
 
-## Settings
+Settings
 
 Configure what is skipped in the settings Page.
 
