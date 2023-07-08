@@ -70,7 +70,7 @@ It automatically skips Ads, intros, Credits, recaps, and anything else you don't
 
 ## ✨ Features
 
-On TickTok and Youtube shorts it automatically:
+On TickTok,Youtube and Instagram shorts it automatically:
 
 <ul>
 <li>scrolls to next short</li>
@@ -83,6 +83,14 @@ On Youtube it also:
 <li>Add Speed Slider</li>
 <li>Adds Volume Slider</li>
 <li>Skip low likes</li>
+<li>Playback control with right and left arrow keys</li>
+</ul>
+
+On Instagram(IG,Insta) it also:
+<ul>
+<li>Skips Recaps</li>
+<li>Add Speed Slider</li>
+<li>Adds Volume Slider</li>
 <li>Playback control with right and left arrow keys</li>
 </ul>
 
