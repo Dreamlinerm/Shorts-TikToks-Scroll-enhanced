@@ -111,15 +111,25 @@ Import and Export all Settings.
 See Statistics.
   
 ## Run the Extension
-```cd firefox```
-### Install web-ext
-```npm install --global web-ext```
-### Run
-```web-ext run --devtools```
-### Build
-copy firefox files to chrome and replace "browser" with "chrome"
 
-```web-ext build --overwrite-dest```
+## Firefox 
+
+### Install web-ext and Firefox
+```npm install --global web-ext```
+## Run
+```npm run start```
+## Build
+
+```npm run build```
+
+## lint
+  
+```npm run lint```
+
+## Chrome
+
+To run the extension in chrome you can just load the ``dist`` folder as an unpacked extension. But every time you modify the code you have to reload the extension.
+I primarily just develop in firefox and then copy the code into chrome and replace ``browser`` with ``chrome`` in the code.
 
 ## Disclaimer
 

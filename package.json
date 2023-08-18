@@ -1,0 +1,20 @@
+{
+  "name": "Shorts-TikToks-Reels Scroll enhanced",
+  "version": "1.0.53",
+  "description": "Auto play next short change speed, volume and more",
+  "scripts": {
+    "start": "web-ext run --source-dir ./firefox/",
+    "build": "cd firefox && web-ext build  --overwrite-dest && cd ../chrome/ && web-ext build --overwrite-dest",
+    "lint": "web-ext lint --source-dir ./firefox/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dreamlinerm/Shorts-TikToks-Scroll-enhanced.git"
+  },
+  "author": "Marvin Krebber",
+  "license": "weaklyProtective",
+  "bugs": {
+    "url": "https://github.com/Dreamlinerm/Shorts-TikToks-Scroll-enhanced/issues"
+  },
+  "homepage": "https://github.com/Dreamlinerm/Shorts-TikToks-Scroll-enhanced#readme"
+}
